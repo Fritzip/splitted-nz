@@ -12,6 +12,8 @@ from django.conf.urls import include
 from django.contrib import admin
 admin.autodiscover()
 
+app_name = "splittednz"
+
 urlpatterns = [
     url(r'^$', app.views.gallery, name='gallery'),
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/icons/favicon.ico', permanent=True)),

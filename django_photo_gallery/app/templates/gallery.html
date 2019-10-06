@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<div class="slider">
+<!-- <div class="slider">
     <ul class="slides">
         <li>
             <img src="{% static 'images/mountain.jpg' %}" alt="Django Photo Gallery" class="opaque">
@@ -25,25 +25,21 @@
             </div>
         </li>
     </ul>
-</div>
+</div> -->
 <div class="container">
     <div class="row">
         {% for album in albums %}
-
         <div class="col">
             <div class="card dpg-album-card">
+                <a  href="{% url 'album' album.slug %}"}>
                 <div class="card-image">
                     <img src="{{ album.thumb.url }}" alt="{{ album.title }}" class="dpg-album-card-image" />
                 </div>
                 <div class="card-content">
                     <span class="card-title">{{ album.title }}</span>
-                    <p>{{ album.description|truncatechars:120 }}</p>
+                    <p class="right">{{ album.created|date:'d M Y'|truncatechars:120 }}</p>
                 </div>
-                <div class="card-action">
-                    <a href="{% url 'album' album.slug %}">
-                        More Images
-                    </a>
-                </div>
+                </a>
             </div>
         </div>
 

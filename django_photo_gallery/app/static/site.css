@@ -65,10 +65,17 @@ strong {
 }
 
 .dpg-album-card-image {
-    width:300px;
-    height:225px;
+    width:250px;
+    height:200px;
 }
 
 .dpg-album-card, .dpg-album-image {
-    max-width:300px;
+    max-width:250px;
+}
+
+.mycol {
+  padding-right: 0;
+  padding-top: 0;
+  padding-left: 0;
+  padding-bottom: 0;
 }
