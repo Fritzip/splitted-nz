@@ -13,16 +13,30 @@ middleware here, or combine a Django application with an application of another
 framework.
 
 """
-import os
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_photo_gallery.settings")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
 
-# Apply WSGI middleware here.
-# from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)
+import os 
+import time 
+import traceback 
+import signal 
+import sys 
+ 
+from django.core.wsgi import get_wsgi_application 
+ 
+sys.path.append('/srv/http/django_photo_gallery') 
+# adjust the Python version in the line below as needed 
+sys.path.append('/srv/http/django_photo_gallery/venv/lib/python3.7/site-packages') 
+ 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_photo_gallery.settings") 
+ 
+try: 
+    application = get_wsgi_application() 
+except Exception: 
+    # Error loading applications 
+    if 'mod_wsgi' in sys.modules: 
+        traceback.print_exc() 
+        os.kill(os.getpid(), signal.SIGINT) 
+        time.sleep(2.5) 
