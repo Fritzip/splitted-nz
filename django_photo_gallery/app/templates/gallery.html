@@ -29,16 +29,16 @@
 <div class="container">
     <div class="row">
         {% for album in albums %}
-        <div class="col">
+        <div class="col s12 m5 l4 push-m1">
             <div class="card dpg-album-card">
                 <a  href="{% url 'album' album.slug %}"}>
                 <div class="card-image">
                     <img src="{{ album.thumb.url }}" alt="{{ album.title }}" class="dpg-album-card-image" />
-                </div>
-                <div class="card-content">
                     <span class="card-title">{{ album.title }}</span>
-                    <p class="right">{{ album.created|date:'d M Y'|truncatechars:120 }}</p>
                 </div>
+                <!-- <div class="card-content">
+                    <p class="right">{{ album.created|date:'d M Y'|truncatechars:120 }}</p>
+                </div> -->
                 </a>
             </div>
         </div>

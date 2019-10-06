@@ -17,11 +17,28 @@
                 <p>{{ album.description }}</p>
 
                 <div class="container">
-                    <div class="row fullwidth-container">
+                    <div class="row">
                         {% for item in images %}
-                        <a class="col mycol" href="javascript:pswpInit({{ forloop.counter0 }});">
-                            <img src="{{ item.thumb.url }}" class="responsive-img dpg-album-image" alt="{{ item.alt }}" />
+                        <div class="col s12 m5 l4 push-m1">
+                        <div class="card dpg-album-card">
+                        <a  href="javascript:pswpInit({{ forloop.counter0 }});"}>
+                            <div class="card-image">
+                                <img src="{{ item.thumb.url }}" alt="{{ item.alt }}" class="dpg-album-card-image" />
+                                <!-- <span class="card-title">{{ album.title }}</span> -->
+                            </div>
+                            <!-- <div class="card-content">
+                                <p class="right">{{ album.created|date:'d M Y'|truncatechars:120 }}</p>
+                            </div> -->
                         </a>
+                    </div></div>
+                        <!-- <a class="col mycol" href="javascript:pswpInit({{ forloop.counter0 }});">
+                            <img src="{{ item.thumb.url }}" class="responsive-img dpg-album-image" alt="{{ item.alt }}" />
+                        </a> -->
+                        <!-- <div class="col card small">
+                                <div class="card-content">
+                                    <img src="{{ item.thumb.url }}" alt="{{ item.alt }}"/>
+                                </div>
+                        </div> -->
                         {% endfor %}
                     </div>
                 </div>

@@ -55,6 +55,12 @@ strong {
   opacity: 0.6;
 }
 
+.dpg-album-card-image {
+    /*width:50px;*/
+    height:250px;
+    object-fit: cover;
+}
+
 .dpg-italic {
   font-style: italic;
 }
@@ -64,18 +70,12 @@ strong {
     max-height:4rem;
 }
 
-.dpg-album-card-image {
-    width:250px;
-    height:200px;
-}
 
 .dpg-album-card, .dpg-album-image {
-    max-width:250px;
+    max-height:300px;
+     /*object-fit: cover;*/
 }
 
-.mycol {
-  padding-right: 0;
-  padding-top: 0;
-  padding-left: 0;
-  padding-bottom: 0;
+.container {
+  width: 100%; !important
 }
