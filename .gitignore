@@ -243,9 +243,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-django_photo_gallery/env/
-#django_photo_gallery/media/
+django_photo_gallery/venv/
+django_photo_gallery/media/
+django_photo_gallery/db.sqlite3
 apache_config.txt
 *.pyc
-
-env
