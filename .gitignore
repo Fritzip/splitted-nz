@@ -247,6 +247,6 @@ django_photo_gallery/venv/
 django_photo_gallery/media/
 django_photo_gallery/static/
 django_photo_gallery/db.sqlite3
-static/
+#static/
 apache_config.txt
 *.pyc
