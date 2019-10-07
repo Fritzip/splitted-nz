@@ -246,6 +246,7 @@ ModelManifest.xml
 django_photo_gallery/venv/
 django_photo_gallery/media/
 django_photo_gallery/static/
+django_photo_gallery/app/migrations/
 django_photo_gallery/db.sqlite3
 #static/
 apache_config.txt
