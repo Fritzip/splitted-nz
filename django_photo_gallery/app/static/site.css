@@ -110,11 +110,5 @@ strong {
 .flex-container {
   display: flex; /* or inline-flex */
   flex-flow: row wrap;
-  
-  /* Then we define how is distributed the remaining space */
   justify-content: space-around;
-}
-
-.flex-item {
-
 }
