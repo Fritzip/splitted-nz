@@ -34,7 +34,9 @@
                 <a  href="{% url 'album' album.slug %}"}>
                 <div class="card-image">
                     <img src="{{ album.thumb.url }}" alt="{{ album.title }}" class="dpg-album-card-image" />
-                    <span class="card-title">{{ album.title }}</span>
+                    <span class="white-text shadowed-black-text" style="position: absolute; margin: 20px; top:0%; right: 0%">{{ album.created|date:'d M Y' }}</span>
+                    <span class="card-title shadowed-black-text">{{ album.title }}</span>
+                    
                 </div>
                 <!-- <div class="card-content">
                     <p class="right">{{ album.created|date:'d M Y'|truncatechars:120 }}</p>
