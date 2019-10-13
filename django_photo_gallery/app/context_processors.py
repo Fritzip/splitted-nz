@@ -7,6 +7,6 @@ def albums(request):
     # album_list.sort()
     # album_list = [(album,  Chord.objects.filter(album=album).count()) for album in album_list]
 
-    album_list = Album.objects.filter(is_visible=True).order_by('-created')
+    album_list = Album.objects.filter(is_visible=True).order_by('-start_date')
     album_list = [(album.title, album.slug, album.get_event_date(), album.thumb) for album in album_list]
     return {'album_list': album_list}
