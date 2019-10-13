@@ -251,3 +251,5 @@ django_photo_gallery/db.sqlite3
 #static/
 apache_config.txt
 *.pyc
+*.sublime-project
+*.sublime-workspace
