@@ -27,7 +27,6 @@ class AlbumModelAdmin(admin.ModelAdmin):
             album = form.save(commit=False)
             album.modified = datetime.now()
             album.save()
-
             if form.cleaned_data['zip'] != None:
                 zip = zipfile.ZipFile(form.cleaned_data['zip'])
                 for filename in sorted(zip.namelist()):
@@ -58,4 +57,4 @@ class AlbumModelAdmin(admin.ModelAdmin):
 @admin.register(AlbumImage)
 class AlbumImageModelAdmin(admin.ModelAdmin):
     list_display = ('alt', 'album')
-    list_filter = ('album', 'start_date')
+    list_filter = ('album', 'created')

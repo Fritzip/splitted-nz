@@ -8,7 +8,7 @@ from datetime import datetime
 
 class Album(models.Model):
     title = models.CharField(max_length=70)
-    description = models.TextField(max_length=1024)
+    description = models.TextField(max_length=6000)
     thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(300)], format='JPEG', options={'quality': 90})
     tags = models.CharField(max_length=250)
     is_visible = models.BooleanField(default=True)
