@@ -4,6 +4,7 @@ import uuid
 from django.db import models
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
+from datetime import datetime
 
 class Album(models.Model):
     title = models.CharField(max_length=70)
@@ -11,8 +12,8 @@ class Album(models.Model):
     thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(300)], format='JPEG', options={'quality': 90})
     tags = models.CharField(max_length=250)
     is_visible = models.BooleanField(default=True)
-    start_date = models.DateTimeField(auto_now_add=True)
-    end_date = models.DateTimeField(null=True)
+    start_date = models.DateField(default=datetime.today)
+    end_date = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=50, unique=True)
@@ -21,10 +22,10 @@ class Album(models.Model):
     #    return reverse('album', kwargs={'slug':self.slug})
 
     def get_event_date(self):
-        if end_date == "" or start_date == end_date:
-            return start_date
+        if self.end_date is None or self.start_date == self.end_date:
+            return self.start_date.strftime("%d %b %Y")
         else:
-            return start_date + " - " + end_date
+            return self.start_date.strftime("%d %b") + " - " + self.end_date.strftime("%d %b %Y")
 
     def __unicode__(self):
         return self.title

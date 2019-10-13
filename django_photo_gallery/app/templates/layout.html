@@ -43,7 +43,7 @@
         <span class="white-text shadowed-black-text email">maxime.sainlot@gmail.com</span>
       </div></li>
       {% for album in album_list %}
-        <li><a class="waves-effect" href="{% url 'album' album.1 %}">{{ album.0}} - {{ album.2 |date:'d M Y'}}</a></li>
+        <li><a class="waves-effect" href="{% url 'album' album.1 %}">{{ album.0}} - {{ album.2 }}</a></li>
       {% endfor %}
     </ul>
 
