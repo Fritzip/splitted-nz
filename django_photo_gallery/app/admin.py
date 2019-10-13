@@ -19,8 +19,8 @@ from app.forms import AlbumForm
 class AlbumModelAdmin(admin.ModelAdmin):
     form = AlbumForm
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'thumb')
-    list_filter = ('created',)
+    list_display = ('title', 'start_date')
+    list_filter = ('start_date',)
 
     def save_model(self, request, obj, form, change):
         if form.is_valid():
@@ -58,4 +58,4 @@ class AlbumModelAdmin(admin.ModelAdmin):
 @admin.register(AlbumImage)
 class AlbumImageModelAdmin(admin.ModelAdmin):
     list_display = ('alt', 'album')
-    list_filter = ('album', 'created')
+    list_filter = ('album', 'start_date')
