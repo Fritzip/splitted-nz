@@ -12,7 +12,7 @@ from datetime import datetime
 class Album(models.Model):
     title = models.CharField(max_length=70)
     description = models.TextField(max_length=8192)
-    thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(500)], format='JPEG')#, options={'quality': 90})
+    thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
     tags = models.CharField(max_length=250)
     is_visible = models.BooleanField(default=True)
     start_date = models.DateField(default=datetime.today)
