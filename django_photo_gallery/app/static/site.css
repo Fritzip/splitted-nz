@@ -14,7 +14,9 @@
 
 /* Tag overrrides */
 body, h1, h2, h3, h4, h5{
-    font-family: 'Ubuntu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Ubuntu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 h1{

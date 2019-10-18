@@ -40,7 +40,7 @@ class AlbumImage(models.Model):
     # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(500)], format='JPEG')#, options={'quality': 90})
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     alt = models.CharField(max_length=255, default=uuid.uuid4)
-    caption = models.CharField(max_length=2048, blank=True, null=True)
+    caption = models.CharField(max_length=2048, default='')
     created = models.DateTimeField(auto_now_add=True)
     width = models.IntegerField(default=0)
     height = models.IntegerField(default=0)

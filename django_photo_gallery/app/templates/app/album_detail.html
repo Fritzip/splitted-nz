@@ -10,16 +10,18 @@
 
     {% if album.is_visible %}
         <article class="row">
-            <header class="col s12 m12 l10 offset-l1">
+            <header class="col s12 m10 l8 offset-m1 offset-l2">
                 <h1>{{ album.title }}</h1>
             </header>
-            <section class="col s12 m12 l10 offset-l1">
-                <p>{{ album.description }}</p>
-
+            <section class="col s12 m10 l8 offset-m1 offset-l2">
+                <p>{{ album.description|linebreaks }}</p>
+			</section>
+			
+           <section class="col s12 m12 l10 offset-l1">
                 <div class="container">
-                    <div class="row">
+                    <div class="row center-align">
                         {% for item in images %}
-                        <div class="col s12 m5 l4 push-m1">
+                        <div class="col center-align s12 m5 l4 push-m1">
                         <div class="card dpg-album-card">
                         <a  href="javascript:pswpInit({{ forloop.counter0 }});"}>
                             <div class="card-image">
