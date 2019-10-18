@@ -5,14 +5,15 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
  
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFit
+# from imagekit.models import ProcessedImageField
+# from imagekit.processors import ResizeToFit
 from datetime import datetime
 
 class Album(models.Model):
     title = models.CharField(max_length=70)
     description = models.TextField(max_length=8192)
-    thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
+    # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
+    thumb = models.ImageField(upload_to='albums')
     tags = models.CharField(max_length=250)
     is_visible = models.BooleanField(default=True)
     start_date = models.DateField(default=datetime.today)
@@ -34,7 +35,8 @@ class Album(models.Model):
         return self.title
 
 class AlbumImage(models.Model):
-    image = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
+    # image = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
+    image = models.ImageField(upload_to='albums')
     # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(500)], format='JPEG')#, options={'quality': 90})
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     alt = models.CharField(max_length=255, default=uuid.uuid4)
