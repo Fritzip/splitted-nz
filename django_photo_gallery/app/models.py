@@ -14,7 +14,6 @@ class Album(models.Model):
     description = models.TextField(max_length=8192)
     # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
     thumb = models.ImageField(upload_to='albums')
-    tags = models.CharField(max_length=250)
     is_visible = models.BooleanField(default=True)
     start_date = models.DateField(default=datetime.today)
     end_date = models.DateField(null=True, blank=True)
