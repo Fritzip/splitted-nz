@@ -35,7 +35,7 @@ class Album(models.Model):
 
 class AlbumImage(models.Model):
     image = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
-    thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(500)], format='JPEG')#, options={'quality': 90})
+    # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(500)], format='JPEG')#, options={'quality': 90})
     album = models.ForeignKey(Album, on_delete=models.CASCADE)
     alt = models.CharField(max_length=255, default=uuid.uuid4)
     caption = models.CharField(max_length=2048, blank=True, null=True)
@@ -46,7 +46,7 @@ class AlbumImage(models.Model):
 
 @receiver(post_delete, sender=AlbumImage)
 def submission_delete(sender, instance, **kwargs):
-    instance.file.delete(False) 
+    instance.image.delete(False) 
 
 class Post(models.Model):
     text = models.TextField(max_length=1024)

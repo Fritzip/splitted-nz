@@ -48,7 +48,7 @@ class AlbumModelAdmin(admin.ModelAdmin):
                     with Image.open(filepath) as i:
                         img.width, img.height = i.size
 
-                    img.thumb.save('thumb-{0}'.format(filename), contentfile)
+                    # img.thumb.save('thumb-{0}'.format(filename), contentfile)
                     img.save()
                 zip.close() 
             super(AlbumModelAdmin, self).save_model(request, obj, form, change)
