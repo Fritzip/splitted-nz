@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import os
+import re
 import uuid
 import zipfile
 import django_photo_gallery.settings
@@ -15,6 +16,8 @@ from PIL import Image
 from app.models import Album, AlbumImage
 from app.forms import AlbumForm
 
+patt_xmpcaption = re.compile("<dc:description>(.*)<\/dc:description>")
+
 @admin.register(Album)
 class AlbumModelAdmin(admin.ModelAdmin):
     form = AlbumForm
@@ -28,19 +31,26 @@ class AlbumModelAdmin(admin.ModelAdmin):
             album.modified = datetime.now()
             album.save()
             if form.cleaned_data['zip'] != None:
-                zip = zipfile.ZipFile(form.cleaned_data['zip'])
-                for filename in sorted(zip.namelist()):
+                fzip = zipfile.ZipFile(form.cleaned_data['zip'])
+                for filename in sorted(fzip.namelist()):
 
                     file_name = os.path.basename(filename)
                     if not file_name:
                         continue
 
-                    data = zip.read(filename)
+                    data = fzip.read(filename)
                     contentfile = ContentFile(data)
 
                     img = AlbumImage()
                     img.album = album
                     img.alt = filename
+                    xmp_start = data.find(b'<x:xmpmeta')
+                    xmp_end = data.find(b'</x:xmpmeta')
+                    xmp_str = re.findall(patt_xmpcaption, data[xmp_start:xmp_end+12].decode("utf-8"))
+                    if xmp_str:
+                        img.caption = xmp_str[0]
+                    else:
+                        img.caption = ""
                     filename = '{0}{1}.jpg'.format(album.slug, str(uuid.uuid4())[-13:])
                     img.image.save(filename, contentfile)
                 
@@ -50,7 +60,7 @@ class AlbumModelAdmin(admin.ModelAdmin):
 
                     # img.thumb.save('thumb-{0}'.format(filename), contentfile)
                     img.save()
-                zip.close() 
+                fzip.close() 
             super(AlbumModelAdmin, self).save_model(request, obj, form, change)
 
 # In case image should be removed from album.
