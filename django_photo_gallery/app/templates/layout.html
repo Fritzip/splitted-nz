@@ -4,66 +4,59 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {% load staticfiles %} {% include 'material/includes/material_css.html' %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/f636f1b4b1.js"></script>
+    {% load staticfiles %}
+    <!-- {% include 'material/includes/material_css.html' %} -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" integrity="sha256-OweaP/Ic6rsV+lysfyS4h+LM6sRwuO3euTYfr6M124g=" crossorigin="anonymous" />
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    <link rel="stylesheet" href="{% static 'site.css' %}" type="text/css" /> {% block css %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'site.css' %}" type="text/css" />
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
+    {% block css %}{% endblock %}
 </head>
 
 <body>
-    <nav role="navigation">
-        <div class="flex-container">
-            <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left" style="position: absolute;left:0%"><i class="material-icons">menu</i></a> 
-             
-            <a class="page-title" href="{% url 'gallery' %}">Splitted NZ</a>
-            <!-- <ul class="left hide-on-med-and-down">
-                <li>
-                    <a href="#">Navbar Link</a>
-                </li>
-            </ul> -->
-<!-- 
-            <a href="#" data-target="nav-mobile" class="sidenav-trigger">
-                <i class="material-icons">menu</i>
-            </a>
-            <ul id="nav-mobile" class="sidenav" style="transform: translateX(-105%);">
-                <li>
-                    <a href="#">Navbar Link</a>
-                </li>
-            </ul> -->
-        <!-- </div> -->
-    </nav>
+    <div class="flex-container-col">
+        <div>
+            <nav role="navigation">
+                <div class="flex-container-row">
+                    <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left" style="position: absolute;left:0%"><i class="fas fa-bars"></i></a> 
+                     
+                    <a class="page-title" href="{% url 'gallery' %}">Splitted NZ</a>
+            </nav>
 
-    <ul id="slide-out" class="sidenav">
-      <a href="#" data-target="slide-out" class="sidenav-close white-text shadowed-black-text" id=sidenav-closebtn><i class="material-icons">close</i></a> 
-      <li><div class="user-view">
-        <div class="background">
-          <img class="responsive-img" src="{% static 'images/bg.jpg' %}">
+            <ul id="slide-out" class="sidenav">
+              <a href="#" data-target="slide-out" class="sidenav-close white-text shadowed-black-text" id=sidenav-closebtn><i class="fas fa-times" style="margin: 6px"></i></a> 
+              <li><div class="user-view">
+                <div class="background">
+                  <img class="responsive-img" src="{% static 'images/bg.jpg' %}">
+                </div>
+                <p><img class="circle right" src="{% static 'images/face.jpg' %}"></p></br>
+                <span class="white-text shadowed-black-text name">Maxime Sainlot</span>
+                <span class="white-text shadowed-black-text email">maxime.sainlot@gmail.com</span>
+              </div></li>
+              {% for album in album_list %}
+                <li><a class="waves-effect" href="{% url 'album' album.1 %}">
+                    <img class="responsive-img circle" src="{{ album.3.url }}">
+                    <span>{{ album.0 }}</span><span class=sidenav-li-date>{{ album.2 }}</span></a></li>
+              {% endfor %}
+            </ul>
         </div>
-        <p><img class="circle right" src="{% static 'images/face.jpg' %}"></p></br>
-        <span class="white-text shadowed-black-text name">Maxime Sainlot</span>
-        <span class="white-text shadowed-black-text email">maxime.sainlot@gmail.com</span>
-      </div></li>
-      {% for album in album_list %}
-        <li><a class="waves-effect" href="{% url 'album' album.1 %}">
-            <img class="responsive-img circle" src="{{ album.3.url }}">
-            <span>{{ album.0 }}</span><span class=sidenav-li-date>{{ album.2 }}</span></a></li>
-      {% endfor %}
-    </ul>
-
-    {% block content %}{% endblock %}
-
-    <!-- <footer class="page-footer">
-        <div class="footer-copyright">
-            <div class="container">
-                © 2017 Copyright Free - Sharing is Caring
-                <a class="grey-text text-lighten-4 right" href="#!">Sample created by @VelinGeorgiev</a>
-            </div>
+        <div style="flex:1 1 auto">
+            {% block content %}{% endblock %}
         </div>
-    </footer> -->
+    </div>
 
-    <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+    <!-- <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script> -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" integrity="sha256-U/cHDMTIHCeMcvehBv1xQ052bPSbJtbuiw4QA9cTKz0=" crossorigin="anonymous"></script>    
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script> -->
-    {% include 'material/includes/material_js.html' %}
-    <script src="{% static 'app.js' %}"></script> {% block js %}{% endblock %}
+    <!-- {% include 'material/includes/material_js.html' %} -->
+    <script src="{% static 'app.js' %}"></script>
+    {% block js %}{% endblock %}
 </body>
 
 </html>
+
+
+

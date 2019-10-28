@@ -4,12 +4,14 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
+# from djgeojson.views import GeoJSONLayerView
 
-from app.models import Album, AlbumImage
+from app.models import Album, AlbumImage, SleepSpot
+
 
 def gallery(request):
-    list = Album.objects.filter(is_visible=True).order_by('-created')
-    paginator = Paginator(list, 10)
+    albums_list = Album.objects.filter(is_visible=True).order_by('-created')
+    paginator = Paginator(albums_list, 10)
 
     page = request.GET.get('page')
     try:
@@ -19,7 +21,11 @@ def gallery(request):
     except EmptyPage:
         albums = paginator.page(paginator.num_pages) # If page is out of range (e.g.  9999), deliver last page of results.
 
-    return render(request, 'gallery.html', { 'albums': list })
+    return render(request, 'gallery.html', { 'albums': albums_list })
+
+def map(request):
+    sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
+    return render(request, 'map.html', {'qs_results': sleepspots_list})
 
 class AlbumDetail(DetailView):
      model = Album

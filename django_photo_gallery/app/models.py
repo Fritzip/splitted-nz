@@ -9,6 +9,14 @@ from django.dispatch import receiver
 # from imagekit.processors import ResizeToFit
 from datetime import datetime
 
+def event_date(start, end):
+    if end is None or start == end:
+        return start.strftime("%d %b %Y")
+    elif start.strftime("%b") == end.strftime("%b"):
+        return start.strftime("%d") + " - " + end.strftime("%d %b %Y") 
+    else:
+        return start.strftime("%d %b") + " - " + end.strftime("%d %b %Y")
+
 class Album(models.Model):
     title = models.CharField(max_length=70)
     description = models.TextField(max_length=8192)
@@ -25,12 +33,9 @@ class Album(models.Model):
     #    return reverse('album', kwargs={'slug':self.slug})
 
     def get_event_date(self):
-        if self.end_date is None or self.start_date == self.end_date:
-            return self.start_date.strftime("%d %b %Y")
-        else:
-            return self.start_date.strftime("%d %b") + " - " + self.end_date.strftime("%d %b %Y")
+        return event_date(self.start_date, self.end_date)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 class AlbumImage(models.Model):
@@ -51,3 +56,37 @@ def submission_delete(sender, instance, **kwargs):
 
 class Post(models.Model):
     text = models.TextField(max_length=1024)
+
+
+from djgeojson.fields import PointField
+
+class SleepSpot(models.Model):
+    album = models.ForeignKey(Album, on_delete=models.PROTECT, blank=True, null=True)
+    title = models.CharField(max_length=256)
+    # description = models.TextField()
+    # picture = models.ImageField()
+    
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+
+    geom = PointField()
+
+    @property
+    def popupContent(self):
+        popup = '{}<br>{}'.format(event_date(self.start_date, self.end_date), self.title)
+        if self.album:
+            popup += '<br>Article : <a href="{}">{}</a>'.format(self.album.slug, self.album.title)
+
+        return popup
+
+    def __str__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        if self.album and not self.start_date:
+            self.start_date = self.album.start_date
+            self.end_date = self.album.end_date
+        super(SleepSpot, self).save(*args, **kwargs)
+
+
+    

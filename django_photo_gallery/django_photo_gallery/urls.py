@@ -10,17 +10,28 @@ import app.views
 
 from django.conf.urls import include
 from django.contrib import admin
+
+# from app.models import SleepSpot
+from djgeojson.views import GeoJSONLayerView
+
 admin.autodiscover()
 
 app_name = "splittednz"
 
 urlpatterns = [
+    # Gallery
     url(r'^$', app.views.gallery, name='gallery'),
-    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/icons/favicon.ico', permanent=True)),
+    # Album detail
     url(r'^(?P<slug>[-\w]+)$', app.views.AlbumDetail.as_view(), name='album'), #app.views.AlbumView.as_view()
+
+    # Map
+    url(r'^map/$', app.views.map, name='map'),
+    #url(r'^data.geojson$', GeoJSONLayerView.as_view(model=SleepSpot, properties=('title', 'album_title', 'event_date', 'slug')), name='data'),
+
+    # Favicon
+    url(r'^favicon\.ico$', RedirectView.as_view(url='/static/icons/favicon.ico', permanent=True)),
      
     # Auth related urls
-    
     url(r'^accounts/login/$', views.LoginView, name='login'),
     url(r'^logout$', views.LogoutView, { 'next_page': '/', }, name='logout'),
 

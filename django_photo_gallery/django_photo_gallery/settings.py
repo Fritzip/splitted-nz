@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'djgeojson',
     'material',
     'material.admin',
+    'import_export',
     'imagekit',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -150,3 +151,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
+LEAFLET_CONFIG = {
+    # 'SPATIAL_EXTENT': (-47.0, 168.0, -39.0, 176.0),
+    'DEFAULT_CENTER': (-43.5, 172.6),
+    'DEFAULT_ZOOM': 7,
+    'MIN_ZOOM': 5,
+    'MAX_ZOOM': 18,
+}

@@ -13,7 +13,7 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from app.models import Album, AlbumImage
+from app.models import Album, AlbumImage, SleepSpot
 from app.forms import AlbumForm
 
 patt_xmpcaption = re.compile("<dc:description>(.*)<\/dc:description>")
@@ -22,7 +22,7 @@ patt_xmpcaption = re.compile("<dc:description>(.*)<\/dc:description>")
 class AlbumModelAdmin(admin.ModelAdmin):
     form = AlbumForm
     prepopulated_fields = {'slug': ('title',)}
-    list_display = ('title', 'start_date')
+    # list_display = ('title', 'start_date')
     list_filter = ('start_date',)
 
     def save_model(self, request, obj, form, change):
@@ -63,8 +63,20 @@ class AlbumModelAdmin(admin.ModelAdmin):
                 fzip.close() 
             super(AlbumModelAdmin, self).save_model(request, obj, form, change)
 
-# In case image should be removed from album.
 @admin.register(AlbumImage)
 class AlbumImageModelAdmin(admin.ModelAdmin):
     list_display = ('alt', 'album')
     list_filter = ('album', 'created')
+
+from leaflet.admin import LeafletGeoAdmin
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+
+class SleepSpotResource(resources.ModelResource):
+    class Meta:
+        model = SleepSpot
+
+@admin.register(SleepSpot)
+class SleepSpotModelAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
+    list_display = ('title', 'start_date', 'end_date', 'album')
+    resource_class = SleepSpotResource

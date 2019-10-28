@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% load leaflet_tags %}
+{% load geojson_tags %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        var collection = {{ qs_results|geojsonfeature:"popupContent"|safe }};
+        
+        var lineCoordinate = [];
+
+        function onEachFeature(feature, layer) {
+            if (feature.properties && feature.properties.popupContent) {
+                layer.bindPopup(feature.properties.popupContent);
+                lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
+            }
+        }
+
+        function map_init(map, options) {
+            map.addControl(new L.Control.Fullscreen());
+            var layer = L.geoJson(collection, {onEachFeature: onEachFeature}).addTo(map);
+            map.fitBounds(layer.getBounds());
+            console.log(collection);
+
+            L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+
+        }
+
+    </script>
+
+    {% leaflet_map "spots" callback="window.map_init" %}
+    {% leaflet_js %}
+    {% leaflet_css %}
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+
+{% endblock %}
