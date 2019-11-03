@@ -13,7 +13,7 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from app.models import Article, AlbumImage, SleepSpot
+from app.models import Article, ArticleImage, SleepSpot
 from app.forms import ArticleForm
 
 patt_xmpcaption = re.compile("<dc:description>(.*)<\/dc:description>")
@@ -41,7 +41,7 @@ class ArticleModelAdmin(admin.ModelAdmin):
                     data = fzip.read(filename)
                     contentfile = ContentFile(data)
 
-                    img = AlbumImage()
+                    img = ArticleImage()
                     img.album = album
                     img.alt = filename
                     xmp_start = data.find(b'<x:xmpmeta')
@@ -63,8 +63,8 @@ class ArticleModelAdmin(admin.ModelAdmin):
                 fzip.close() 
             super(ArticleModelAdmin, self).save_model(request, obj, form, change)
 
-@admin.register(AlbumImage)
-class AlbumImageModelAdmin(admin.ModelAdmin):
+@admin.register(ArticleImage)
+class ArticleImageModelAdmin(admin.ModelAdmin):
     list_display = ('alt', 'album')
     list_filter = ('album', 'created')
 

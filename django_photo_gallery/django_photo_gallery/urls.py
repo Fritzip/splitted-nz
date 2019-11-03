@@ -21,8 +21,9 @@ app_name = "splittednz"
 urlpatterns = [
     # Gallery
     url(r'^$', app.views.gallery, name='gallery'),
-    # Album detail
-    url(r'^(?P<slug>[-\w]+)$', app.views.AlbumDetail.as_view(), name='album'), #app.views.AlbumView.as_view()
+    # Article detail
+    url(r'^(?P<slug>[-\w]+)$', app.views.ArticleDetail.as_view(), name='album'), 
+    #template_name='article.html'
 
     # Map
     url(r'^map/$', app.views.map, name='map'),

@@ -4,10 +4,8 @@ from django.shortcuts import render
 from django.http import HttpRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
-# from djgeojson.views import GeoJSONLayerView
 
-from app.models import Article, AlbumImage, SleepSpot
-
+from app.models import Article, ArticleImage, SleepSpot
 
 def gallery(request):
     albums_list = Article.objects.filter(is_visible=True).order_by('-created')
@@ -27,14 +25,14 @@ def map(request):
     sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
     return render(request, 'map.html', {'qs_results': sleepspots_list})
 
-class AlbumDetail(DetailView):
-     model = Article
+class ArticleDetail(DetailView):
+    model = Article
 
-     def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(AlbumDetail, self).get_context_data(**kwargs)
+        context = super(ArticleDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the images
-        context['images'] = AlbumImage.objects.filter(album=self.object.id)
+        context['images'] = ArticleImage.objects.filter(album=self.object.id)
         return context
 
 def handler404(request, exception):

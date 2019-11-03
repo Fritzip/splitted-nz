@@ -38,7 +38,7 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
-class AlbumImage(models.Model):
+class ArticleImage(models.Model):
     # image = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
     image = models.ImageField(upload_to='albums')
     # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(500)], format='JPEG')#, options={'quality': 90})
@@ -50,7 +50,7 @@ class AlbumImage(models.Model):
     height = models.IntegerField(default=0)
     slug = models.SlugField(max_length=70, default=uuid.uuid4, editable=False)
 
-@receiver(post_delete, sender=AlbumImage)
+@receiver(post_delete, sender=ArticleImage)
 def submission_delete(sender, instance, **kwargs):
     instance.image.delete(False) 
 
