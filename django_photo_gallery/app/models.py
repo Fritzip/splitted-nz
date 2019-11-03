@@ -69,7 +69,7 @@ class SleepSpot(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
 
-    geom = PointField()
+    geom = PointField(null=True, blank=True, default={})
 
     @property
     def popupContent(self):
