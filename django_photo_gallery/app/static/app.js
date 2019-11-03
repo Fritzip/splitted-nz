@@ -2,7 +2,7 @@
 
     $(".sidenav").sidenav();
 
-    $('.slider').slider();
+    // $('.slider').slider();
 });
 
 // Initializes PhotoSwipe.
