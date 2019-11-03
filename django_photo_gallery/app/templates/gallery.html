@@ -29,12 +29,12 @@
 
 <div class="pagination center">
     <span class="step-links">
-        {% if albums.has_previous %}
-        <a href="?page={{ albums.previous_page_number }}" class="waves-effect waves-light btn btn-large">Previous</a>
+        {% if articles.has_previous %}
+        <a href="?page={{ articles.previous_page_number }}" class="waves-effect waves-light btn btn-large">Previous</a>
         {% endif %}
 
-        {% if albums.has_next %}
-        <a href="?page={{ albums.next_page_number }}" class="waves-effect waves-light btn btn-large">Next</a>
+        {% if articles.has_next %}
+        <a href="?page={{ articles.next_page_number }}" class="waves-effect waves-light btn btn-large">Next</a>
         {% endif %}
     </span>
 </div>

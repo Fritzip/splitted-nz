@@ -13,13 +13,15 @@ def gallery(request):
 
     page = request.GET.get('page')
     try:
-        albums = paginator.page(page)
+        articles = paginator.page(page)
     except PageNotAnInteger:
-        albums = paginator.page(1) # If page is not an integer, deliver first page.
+        articles = paginator.page(1)
+        # If page is not an integer, deliver first page.
     except EmptyPage:
-        albums = paginator.page(paginator.num_pages) # If page is out of range (e.g.  9999), deliver last page of results.
+        articles = paginator.page(paginator.num_pages) 
+        # If page is out of range (e.g.  9999), deliver last page of results.
 
-    return render(request, 'gallery.html', { 'albums': albums_list })
+    return render(request, 'gallery.html', { 'articles': albums_list })
 
 def map(request):
     sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
