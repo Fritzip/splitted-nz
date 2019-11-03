@@ -6,11 +6,11 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 # from djgeojson.views import GeoJSONLayerView
 
-from app.models import Album, AlbumImage, SleepSpot
+from app.models import Article, AlbumImage, SleepSpot
 
 
 def gallery(request):
-    albums_list = Album.objects.filter(is_visible=True).order_by('-created')
+    albums_list = Article.objects.filter(is_visible=True).order_by('-created')
     paginator = Paginator(albums_list, 10)
 
     page = request.GET.get('page')
@@ -28,7 +28,7 @@ def map(request):
     return render(request, 'map.html', {'qs_results': sleepspots_list})
 
 class AlbumDetail(DetailView):
-     model = Album
+     model = Article
 
      def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

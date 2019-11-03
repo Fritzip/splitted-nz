@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
 from django import forms
-from app.models import Album
+from app.models import Article
 
-class AlbumForm(forms.ModelForm):
+class ArticleForm(forms.ModelForm):
     class Meta:
-        model = Album
+        model = Article
         exclude = []
 
     zip = forms.FileField(required=False)

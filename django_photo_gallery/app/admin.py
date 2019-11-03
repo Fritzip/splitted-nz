@@ -13,14 +13,14 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from app.models import Album, AlbumImage, SleepSpot
-from app.forms import AlbumForm
+from app.models import Article, AlbumImage, SleepSpot
+from app.forms import ArticleForm
 
 patt_xmpcaption = re.compile("<dc:description>(.*)<\/dc:description>")
 
-@admin.register(Album)
-class AlbumModelAdmin(admin.ModelAdmin):
-    form = AlbumForm
+@admin.register(Article)
+class ArticleModelAdmin(admin.ModelAdmin):
+    form = ArticleForm
     prepopulated_fields = {'slug': ('title',)}
     # list_display = ('title', 'start_date')
     list_filter = ('start_date',)
@@ -61,7 +61,7 @@ class AlbumModelAdmin(admin.ModelAdmin):
                     # img.thumb.save('thumb-{0}'.format(filename), contentfile)
                     img.save()
                 fzip.close() 
-            super(AlbumModelAdmin, self).save_model(request, obj, form, change)
+            super(ArticleModelAdmin, self).save_model(request, obj, form, change)
 
 @admin.register(AlbumImage)
 class AlbumImageModelAdmin(admin.ModelAdmin):
