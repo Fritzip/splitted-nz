@@ -39,10 +39,10 @@
                 <span class="white-text shadowed-black-text name">Maxime Sainlot</span>
                 <span class="white-text shadowed-black-text email">maxime.sainlot@gmail.com</span>
               </div></li>
-              {% for album in album_list %}
-                <li><a class="waves-effect" href="{% url 'album' album.1 %}">
-                    <img class="responsive-img circle" src="{{ album.3.url }}">
-                    <span>{{ album.0 }}</span><span class=sidenav-li-date>{{ album.2 }}</span></a></li>
+              {% for article in article_list_cp %}
+                <li><a class="waves-effect" href="{% url 'article' article.1 %}">
+                    <img class="responsive-img circle" src="{{ article.3.url }}">
+                    <span>{{ article.0 }}</span><span class=sidenav-li-date>{{ article.2 }}</span></a></li>
               {% endfor %}
             </ul>
         </div>

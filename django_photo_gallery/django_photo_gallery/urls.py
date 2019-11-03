@@ -22,7 +22,7 @@ urlpatterns = [
     # Gallery
     url(r'^$', app.views.gallery, name='gallery'),
     # Article detail
-    url(r'^(?P<slug>[-\w]+)$', app.views.ArticleDetail.as_view(), name='album'), 
+    url(r'^(?P<slug>[-\w]+)$', app.views.ArticleDetail.as_view(), name='article'), 
     #template_name='article.html'
 
     # Map

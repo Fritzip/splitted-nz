@@ -2,11 +2,7 @@ from django.shortcuts import render
 
 from .models import Article
 
-def albums(request):
-    # album_list = list(set(map(lambda x : x['album'], list(Album.objects.values('album')))))
-    # album_list.sort()
-    # album_list = [(album,  Chord.objects.filter(album=album).count()) for album in album_list]
-
-    album_list = Article.objects.filter(is_visible=True).order_by('-start_date')
-    album_list = [(album.title, album.slug, album.get_event_date(), album.thumb) for album in album_list]
-    return {'album_list': album_list}
+def articles(request):
+    article_list = Article.objects.filter(is_visible=True).order_by('-start_date')
+    article_list = [(article.title, article.slug, article.get_event_date(), article.thumb) for article in article_list]
+    return {'article_list_cp': article_list}
