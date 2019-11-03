@@ -4,27 +4,41 @@
 {% load geojson_tags %}
 
 {% block content %}
-
     <script type="text/javascript">
         var collection = {{ qs_results|geojsonfeature:"popupContent"|safe }};
         
         var lineCoordinate = [];
 
-        function onEachFeature(feature, layer) {
-            if (feature.properties && feature.properties.popupContent) {
-                layer.bindPopup(feature.properties.popupContent);
-                lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
+        function onEachFeatureClosure(map) {
+            return function onEachFeature(feature, layer) {
+                if (feature.properties && feature.properties.popupContent) {
+                    layer.bindPopup(feature.properties.popupContent).on("click", ev => {
+                        $(".zoom-in").on("click", e => {
+                            map.setView(ev.latlng, 12);
+                        });
+                    });
+
+                    lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
+                }
             }
         }
 
         function map_init(map, options) {
             map.addControl(new L.Control.Fullscreen());
-            var layer = L.geoJson(collection, {onEachFeature: onEachFeature}).addTo(map);
+            var layer = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map)}).addTo(map);
             map.fitBounds(layer.getBounds());
-            console.log(collection);
 
-            L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
-
+            var polyline = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+            // polyline.getLatLngs().forEach(function (latLng) {
+            //   if (previousPoint) {
+            //     L.marker(latLng).bindPopup(
+            //       'Distance from previous point: '
+            //       + previousPoint.distanceTo(latLng)
+            //       + ' meter(s)'
+            //     ).addTo(map);
+            //   }
+            //   previousPoint = latLng;
+            // });
         }
 
     </script>
@@ -35,4 +49,7 @@
     <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
     <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 
+{% endblock %}
+
+{% block js %}
 {% endblock %}

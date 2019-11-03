@@ -152,9 +152,9 @@ STATICFILES_FINDERS = (
 )
 
 LEAFLET_CONFIG = {
-    # 'SPATIAL_EXTENT': (-47.0, 168.0, -39.0, 176.0),
     'DEFAULT_CENTER': (-43.5, 172.6),
     'DEFAULT_ZOOM': 7,
-    'MIN_ZOOM': 5,
-    'MAX_ZOOM': 18,
+    'MIN_ZOOM': 2,
+    'MAX_ZOOM': 19,
+    'RESET_VIEW': False,
 }
