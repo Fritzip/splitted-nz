@@ -109,7 +109,7 @@ nav {
 }
 
 .sidenav {
-  z-index: 998;
+  z-index: 1001;
 }
 
 .sidenav li > a {
@@ -159,9 +159,8 @@ nav {
 }
 
 .leaflet-container {  /* all maps */
-    width:  100%;
-    height: 100%;
-    /*height: 100vh;*/
+  width:  100%;
+  height: 100%;
 }
 
 /* Resize the "display_raw" textbox */
