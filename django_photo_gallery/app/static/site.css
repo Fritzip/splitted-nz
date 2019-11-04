@@ -167,3 +167,11 @@ nav {
 .django-leaflet-raw-textarea {
     width: 100%;
 }
+
+.zoom-in-popup {
+  position: absolute;
+  top:0%;
+  top: 0;
+  right: 0;
+  padding: 4px 20px 0 0;
+}

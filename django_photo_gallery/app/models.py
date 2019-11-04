@@ -75,8 +75,8 @@ class SleepSpot(models.Model):
     def popupContent(self):
         popup = '{}<br>{}'.format(event_date(self.start_date, self.end_date), self.title)
         if self.album:
-            popup += '<br>Article : <a href="{}">{}</a>'.format(self.album.slug, self.album.title)
-        popup += '<a href="#" class="zoom-in"><i class="fas fa-search-plus"></i></a>'#%(self.id)
+            popup += '<span class=article-link-popup><br>Article : <a href="{}">{}</a></span>'.format(self.album.slug, self.album.title)
+        popup += '<a href="#" class="zoom-in-popup"><i class="fas fa-search-plus"></i></a>'#%(self.id)
 
         return popup
 

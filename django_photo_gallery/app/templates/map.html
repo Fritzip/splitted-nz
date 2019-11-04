@@ -13,7 +13,7 @@
             return function onEachFeature(feature, layer) {
                 if (feature.properties && feature.properties.popupContent) {
                     layer.bindPopup(feature.properties.popupContent).on("click", ev => {
-                        $(".zoom-in").on("click", e => {
+                        $(".zoom-in-popup").on("click", e => {
                             map.setView(ev.latlng, 12);
                         });
                     });
