@@ -26,7 +26,7 @@
         function map_init(map, options) {
             map.addControl(new L.Control.Fullscreen());
             var layer = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map)}).addTo(map);
-            map.fitBounds(layer.getBounds());
+            map.fitBounds(layer.getBounds().pad(0.3));
 
             var polyline = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
             // polyline.getLatLngs().forEach(function (latLng) {

@@ -35,6 +35,7 @@ class ArticleDetail(DetailView):
         context = super(ArticleDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the images
         context['images'] = ArticleImage.objects.filter(album=self.object.id)
+        context['sleepspots'] = SleepSpot.objects.filter(album=self.object.id).order_by('-start_date')
         return context
 
 def handler404(request, exception):
