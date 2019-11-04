@@ -2,6 +2,8 @@
 
     $(".sidenav").sidenav();
 
+    $('.tooltipped').tooltip();
+    
     // $('.slider').slider();
 });
 

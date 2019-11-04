@@ -3,6 +3,9 @@
 {% load leaflet_tags %}
 {% load geojson_tags %}
 
+{% block title %}Map{% endblock title %}
+{% block title-link %}https://youtu.be/jyq-0TbBiWg?t=50{% endblock title-link %}
+
 {% block content %}
     <script type="text/javascript">
         var collection = {{ qs_results|geojsonfeature:"popupContent"|safe }};

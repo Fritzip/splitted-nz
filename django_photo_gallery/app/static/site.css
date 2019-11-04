@@ -13,14 +13,18 @@
 }
 
 /* Tag overrrides */
+body {
+    text-align: justify;
+    text-justify: inter-word;  
+}
+
 body, h1, h2, h3, h4, h5{
     font-family: 'Ubuntu', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    text-align: justify;
-    text-justify: inter-word;
 }
 
 h1{
     font-size: 3.0rem;
+    text-align: left;
 }
 
 h2{
@@ -144,12 +148,16 @@ nav {
 .page-title {
   color: #fff;
   font-size: 2.1rem;
+  flex: 1;
+  text-align: center;
+  flex-wrap: wrap;
+  z-index: 1005;
 }
 
 .flex-container-row {
   display: flex; /* or inline-flex */
   flex-flow: row wrap;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .flex-container-col {

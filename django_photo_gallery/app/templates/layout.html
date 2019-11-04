@@ -24,9 +24,12 @@
         <div>
             <nav role="navigation">
                 <div class="flex-container-row">
-                    <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large left" style="position: absolute;left:0%"><i class="fas fa-bars"></i></a> 
-                     
-                    <a class="page-title" href="{% url 'gallery' %}">Splitted NZ</a>
+                    <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large" style="flex:0"><i class="fas fa-bars"></i></a>
+                    <a href="{% url 'gallery' %}" class="sidenav-trigger show-on-large tooltipped" data-position="bottom" data-tooltip="Home" style="flex:0;margin-right: auto;"><i class="fas fa-kiwi-bird"></i></a>
+                    <a class="flow-text" href="{% block title-link %}{% url 'gallery' %}{% endblock title-link %}">{% block title %}Splitted NZ{% endblock title %}</a>
+                    <a class="sidenav-trigger show-on-large tooltipped" data-position="bottom" data-tooltip="Where did you sleep last night ?" href="{% url 'map' %}" style="flex:0; margin-left: auto;"><i class="fas fa-map-marked-alt"></i></a> 
+                    <a class="sidenav-trigger show-on-large tooltipped" data-position="bottom" data-tooltip="Admin" href="{% url 'admin:index' %}" style="flex:0"><i class="fas fa-user-lock"></i></a>
+                </div>
             </nav>
 
             <ul id="slide-out" class="sidenav">
