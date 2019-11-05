@@ -3,7 +3,7 @@
 {% load leaflet_tags %}
 {% load geojson_tags %}
 
-{% block title %}Map{% endblock title %}
+{% block title %}Where did you sleep last night ?{% endblock title %}
 {% block title-link %}https://youtu.be/jyq-0TbBiWg?t=50{% endblock title-link %}
 
 {% block content %}
@@ -32,6 +32,23 @@
             map.fitBounds(layer.getBounds().pad(0.3));
 
             var polyline = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+
+            var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
+            
+            var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            var baseMaps = {
+                "OSM" : classic,
+                "Outdoor": outdoor
+            };
+
+            var overlayMaps = {
+                "SleepSpots": layer,
+                "Path": polyline
+            };
+            
+            L.control.layers(baseMaps, overlayMaps).addTo(map);
+
             // polyline.getLatLngs().forEach(function (latLng) {
             //   if (previousPoint) {
             //     L.marker(latLng).bindPopup(

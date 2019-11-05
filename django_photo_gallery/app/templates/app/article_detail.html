@@ -140,7 +140,7 @@
     <script type="text/javascript">
         var collection = {{ sleepspots|geojsonfeature:"popupContent"|safe }};
         
-        // var lineCoordinate = [];
+        var lineCoordinate = [];
 
         function onEachFeatureClosure(map) {
             return function onEachFeature(feature, layer) {
@@ -152,7 +152,7 @@
                         $('.article-link-popup').hide();
                     });
 
-                    // lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
+                    lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
                 }
             }
         }
@@ -161,8 +161,29 @@
             map.addControl(new L.Control.Fullscreen());
             var layer = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map)}).addTo(map);
             map.fitBounds(layer.getBounds().pad(2));
+            console.log(collection.features.length);
+            if (collection.features.length == 1)
+            {
+                map.zoomOut(8);
+            }
 
-            // var polyline = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+            var polyline = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+
+            var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
+            var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            var baseMaps = {
+                "OSM" : classic,
+                "Outdoor": outdoor
+            };
+
+            var overlayMaps = {
+                "SleepSpots": layer,
+                "Path": polyline
+            };
+            
+            L.control.layers(baseMaps, overlayMaps).addTo(map);
+
             // polyline.getLatLngs().forEach(function (latLng) {
             //   if (previousPoint) {
             //     L.marker(latLng).bindPopup(

@@ -157,4 +157,6 @@ LEAFLET_CONFIG = {
     'MIN_ZOOM': 2,
     'MAX_ZOOM': 19,
     'RESET_VIEW': False,
+    'TILES': []
+    # 'TILES': [('Outdoor', 'https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1', {'attribution': '&copy; Thunderforest'})]
 }
