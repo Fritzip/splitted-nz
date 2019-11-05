@@ -63,8 +63,6 @@ from djgeojson.fields import PointField
 class SleepSpot(models.Model):
     album = models.ForeignKey(Article, on_delete=models.PROTECT, blank=True, null=True)
     title = models.CharField(max_length=256)
-    # description = models.TextField()
-    # picture = models.ImageField()
     
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
@@ -73,10 +71,15 @@ class SleepSpot(models.Model):
 
     @property
     def popupContent(self):
-        popup = '{}<br>{}'.format(event_date(self.start_date, self.end_date), self.title)
+        popup = '<b>{}</b><br>{}'.format(self.title, event_date(self.start_date, self.end_date))
         if self.album:
-            popup += '<span class=article-link-popup><br>Article : <a href="{}">{}</a></span>'.format(self.album.slug, self.album.title)
-        popup += '<a href="#" class="zoom-in-popup"><i class="fas fa-search-plus"></i></a>'#%(self.id)
+            article_link = 'Article : <a href="{}">{}</a>'.format(self.album.slug, self.album.title)
+        else:
+            article_link = 'Pas d\'article en rapport'
+        
+        popup += '<br><span class=article-link-popup>{}</span>'.format(article_link)
+
+        popup += '<span class="btn-floating btn-small waves-effect waves-light zoom-in-popup"><i class="fas fa-compress-arrows-alt"></i></span>'
 
         return popup
 
