@@ -151,7 +151,8 @@ nav {
   flex: 1;
   text-align: center;
   flex-wrap: wrap;
-  z-index: 1005;
+  margin: 0 10px 0 10px;
+  /*z-index: 1005;*/
 }
 
 .flex-container-row {
@@ -178,8 +179,7 @@ nav {
 
 .zoom-in-popup {
   position: absolute;
-  top:0%;
-  top: 0;
-  right: 0;
-  padding: 4px 20px 0 0;
+  bottom: -10px;
+  right: -10px;
+  margin: 0;
 }
