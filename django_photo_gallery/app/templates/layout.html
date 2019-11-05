@@ -24,18 +24,20 @@
         <div>
             <nav class="nav-extended" role="navigation">
                 <div class="flex-container-row nav-wrapper" id="nav-top">
-                    <a href="#" data-target="slide-out" class="sidenav-trigger show-on-large" style="flex:0; margin-right: 10px"><i class="fas fa-bars"></i></a>
-                    <a href="{% url 'gallery' %}" class="sidenav-trigger show-on-large tooltipped" id="home-icon" data-position="bottom" data-tooltip="Home" style="flex:0;margin-right: auto;margin-left: 10px"><i class="fas fa-kiwi-bird"></i></a>
+                    <div class="flex-container-row nav-icons-left">
+                        <a href="#" data-target="slide-out" class="show-on-large" id="sidenav-toggle"><i class="nav-icon fas fa-bars"></i></a>
+                        <a href="{% url 'gallery' %}" class="tooltipped" id="home-icon" data-position="bottom" data-tooltip="Home"><i class="nav-icon fas fa-kiwi-bird"></i></a>
+                    </div>
                     <a class="flow-text center page-title" href="{% block title-link %}{% url 'gallery' %}{% endblock title-link %}">{% block title %}Splitted NZ{% endblock title %}</a>
-                    <a class="sidenav-trigger show-on-large tooltipped" data-position="bottom" data-tooltip="Map" href="{% url 'map' %}" style="flex:0; margin-left: auto; margin-right: 10px"><i class="fas fa-map-marked-alt"></i></a> 
-                    <a class="sidenav-trigger show-on-large tooltipped" data-position="bottom" data-tooltip="Admin" href="{% url 'admin:index' %}" style="flex:0; margin-left: 10px"><i class="fas fa-user-lock"></i></a>
+                    <div class="flex-container-row nav-icons-right">
+                        <a class="tooltipped" data-position="bottom" data-tooltip="Map" href="{% url 'map' %}"><i class="nav-icon fas fa-map-marked-alt"></i></a> 
+                        <a class="tooltipped" data-position="bottom" data-tooltip="Admin" href="{% url 'admin:index' %}"><i class="nav-icon fas fa-user-lock"></i></a>
+                    </div>
                 </div>
                 <div class="flex-container-row nav-wrapper hide-on-med-and-up" id="nav-bottom">
                 </div>
             </nav>
-
             <ul id="slide-out" class="sidenav">
-              <a href="#" data-target="slide-out" class="sidenav-close white-text shadowed-black-text" id=sidenav-closebtn><i class="fas fa-times" style="margin: 6px"></i></a> 
               <li><div class="user-view">
                 <div class="background">
                   <img class="responsive-img" src="{% static 'images/bg.jpg' %}">
@@ -64,7 +66,7 @@
                 }
             } else {
                 if ($(".page-title").parent('#nav-bottom').length) {
-                    $(".page-title").insertAfter("#home-icon");
+                    $(".page-title").insertAfter(".nav-icons-left");
                 }
             }
         }).trigger('resize');

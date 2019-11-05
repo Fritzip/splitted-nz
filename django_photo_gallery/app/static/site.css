@@ -45,6 +45,26 @@ nav {
   background-color: #414654;
 }
 
+nav #sidenav-toggle {
+  margin:0;
+  z-index: 1006;
+}
+
+.nav-icons-left {
+  margin-right: auto;
+  margin-left: 10px;
+}
+
+.nav-icons-right {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.nav-icon {
+  flex:0;
+   vertical-align: sub;
+  margin: 0 10px 0 10px;
+}
 /*header, body, footer {
   padding-left: 300px;
 }
@@ -159,6 +179,7 @@ nav {
   display: flex; /* or inline-flex */
   flex-flow: row wrap;
   justify-content: space-between;
+  height: 100%;
 }
 
 .flex-container-col {
