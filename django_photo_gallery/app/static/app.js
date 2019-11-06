@@ -22,6 +22,21 @@
   $( '.tooltipped' ).tooltip();
 } );
 
+$( window )
+  .on( 'resize',
+       function() {
+         if ( window.innerWidth <= 600 ) {
+           if ( $( ".page-title" ).parent( '#nav-top' ).length ) {
+             $( ".page-title" ).detach().appendTo( "#nav-bottom" );
+           }
+         } else {
+           if ( $( ".page-title" ).parent( '#nav-bottom' ).length ) {
+             $( ".page-title" ).insertAfter( ".nav-icons-left" );
+           }
+         }
+       } )
+  .trigger( 'resize' );
+
 // Initializes PhotoSwipe.
 var pswpInit = function( startsAtIndex ) {
   if ( !startsAtIndex ) { startsAtIndex = 0; }

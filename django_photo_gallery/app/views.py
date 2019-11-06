@@ -25,7 +25,7 @@ def gallery(request):
 
 def map(request):
     sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
-    return render(request, 'map.html', {'qs_results': sleepspots_list})
+    return render(request, 'map.html', {'sleepspots': sleepspots_list})
 
 class ArticleDetail(DetailView):
     model = Article

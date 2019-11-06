@@ -11,88 +11,6 @@
     <!-- <link rel="stylesheet" href="{% static 'external/photoswipe/default-skin/default-skin.css' %}">  -->
 {% endblock %}
 
-{% block js %}
-    <script>
-        // build the json article images collection 
-        window.djangoAlbumImages = [
-            {% for item in images %}
-                {
-                    src: '{{ item.image.url }}',
-                    w:  '{{ item.width }}',
-                    h:  '{{ item.height }}',
-                    title: '{{ item.caption }}'
-                },
-            {% endfor %}
-        ];
-    </script>
-    <script src="{% static 'external/photoswipe/photoswipe.min.js' %}"></script> 
-    <script src="{% static 'external/photoswipe/photoswipe-ui-default.min.js' %}"></script>
-    <script type="text/javascript">
-        var collection = {{ sleepspots|geojsonfeature:"popupContent"|safe }};
-        
-        var lineCoordinate = [];
-
-        function onEachFeatureClosure(map) {
-            return function onEachFeature(feature, layer) {
-                if (feature.properties && feature.properties.popupContent) {
-                    layer.bindPopup(feature.properties.popupContent).on("click", ev => {
-                        $(".zoom-in-popup").on("click", e => {
-                            map.setView(ev.latlng, 12);
-                        });
-                        $('.article-link-popup').hide();
-                    });
-
-                    lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
-                }
-            }
-        }
-
-        function map_init(map, options) {
-            map.addControl(new L.Control.Fullscreen());
-            var layer = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map)}).addTo(map);
-            map.fitBounds(layer.getBounds().pad(2));
-            console.log(collection.features.length);
-            if (collection.features.length == 1)
-            {
-                map.zoomOut(8);
-            }
-
-            var polyline = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
-
-            var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
-            var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-            var baseMaps = {
-                "OSM" : classic,
-                "Outdoor": outdoor
-            };
-
-            var overlayMaps = {
-                "SleepSpots": layer,
-                "Path": polyline
-            };
-            
-            L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-            // polyline.getLatLngs().forEach(function (latLng) {
-            //   if (previousPoint) {
-            //     L.marker(latLng).bindPopup(
-            //       'Distance from previous point: '
-            //       + previousPoint.distanceTo(latLng)
-            //       + ' meter(s)'
-            //     ).addTo(map);
-            //   }
-            //   previousPoint = latLng;
-            // });
-        }
-
-    </script>
-    {% leaflet_js %}
-    {% leaflet_css %}
-    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
-    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
-{% endblock %}
-
 {% block content %}
 
     {% if article.is_visible %}
@@ -115,7 +33,7 @@
                         <div class="card dpg-album-card">
                         <a  href="javascript:pswpInit({{ forloop.counter0 }});"}>
                             <div class="card-image">
-                                <img src="{{ item.image.url }}" alt="{{ item.alt }}" class="dpg-album-card-image" />
+                                <img src='https://via.placeholder.com/{{ item.width }}x{{ item.height }}.jpg' data-src='{{ item.image.url }}' alt="{{ item.alt }}" class="asyncImage dpg-album-card-image" />
                             </div>
                         </a>
                         </div></div>
@@ -201,4 +119,35 @@
         <h3>This article is temporarily unavailable.</h3>
     {% endif %}
 
+{% endblock %}
+
+{% block js %}
+    <script>
+        // build the json article images collection 
+        window.djangoAlbumImages = [
+            {% for item in images %}
+                {
+                    src: '{{ item.image.url }}',
+                    w:  '{{ item.width }}',
+                    h:  '{{ item.height }}',
+                    title: '{{ item.caption }}'
+                },
+            {% endfor %}
+        ];
+    </script>
+    <script src="{% static 'external/photoswipe/photoswipe.min.js' %}"></script> 
+    <script src="{% static 'external/photoswipe/photoswipe-ui-default.min.js' %}"></script>
+    
+    {% include "mapjs.html" %}
+    
+    <script type="text/javascript">
+        $(window).on('load', function(){
+            $('.asyncImage').each(function(i, obj) {
+                $(this).attr('src', $(this).data('src'));
+                $(this).removeAttr( "data-src" );
+                $(this).removeClass( "asyncImage" );
+
+            });
+        });
+    </script>
 {% endblock %}
