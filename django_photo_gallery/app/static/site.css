@@ -41,6 +41,10 @@ strong {
     color: darkblue;
 }
 
+a:focus { 
+    outline: none; 
+}
+
 nav {
   background-color: #414654;
 }
@@ -62,8 +66,9 @@ nav #sidenav-toggle {
 
 .nav-icon {
   flex:0;
-   vertical-align: sub;
   margin: 0 10px 0 10px;
+  height: 100%;
+  vertical-align: sub;
 }
 /*header, body, footer {
   padding-left: 300px;
@@ -123,15 +128,6 @@ nav #sidenav-toggle {
   text-shadow: 0px 0px 3px #000000;
 }
 
-#sidenav-closebtn {
-  position: absolute;
-  z-index: 1000;
-  padding: unset;
-  height: 64px; !important
-  line-height: 64px;
-  margin: 18px 18px;
-}
-
 .sidenav {
   z-index: 1001;
 }
@@ -167,19 +163,19 @@ nav #sidenav-toggle {
 
 .page-title {
   color: #fff;
-  font-size: 2.1rem;
-  flex: 1;
+  font-size: 1.7rem;
   text-align: center;
-  flex-wrap: wrap;
+  flex-grow: 0;
+  flex-basis: auto;
   margin: 0 10px 0 10px;
-  /*z-index: 1005;*/
 }
 
 .flex-container-row {
   display: flex; /* or inline-flex */
-  flex-flow: row wrap;
+  flex-flow: row nowrap;
   justify-content: space-between;
   height: 100%;
+  align-items: flex-start;
 }
 
 .flex-container-col {
@@ -204,3 +200,21 @@ nav #sidenav-toggle {
   right: -10px;
   margin: 0;
 }
+
+#nav-bottom {
+  justify-content: space-around;
+}
+
+#nav-bottom .page-title {
+  /*white-space: nowrap;*/
+  /*overflow: hidden;*/
+  /*text-overflow: ellipsis;*/
+  /*font-size: calc(2vw + 2vh);*/
+}
+/*  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: block;
+  line-height: 1em;
+  max-height: 2em; */
