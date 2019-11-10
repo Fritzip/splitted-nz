@@ -1,5 +1,4 @@
 # Splitted NZ #
-forked from ![Django Photo Gallery](https://github.com/VelinGeorgiev/django-photo-gallery)
 
 ## Additional Django apps dependencies
 - Pillow
@@ -14,11 +13,10 @@ forked from ![Django Photo Gallery](https://github.com/VelinGeorgiev/django-phot
 - Django-Python [development environment](https://www.djangoproject.com/start/) already set up.
 - virtualenv installed.
 
-## Solution
+## Forked from
 
-Solution|Author(s)
---------|---------
-Django Photo Gallery | Velin Georgiev ([@VelinGeorgiev](https://twitter.com/velingeorgiev))
+[Django Photo Gallery](https://github.com/VelinGeorgiev/django-photo-gallery)
+by Velin Georgiev ([@VelinGeorgiev](https://twitter.com/velingeorgiev))
 
 ## Minimal Path to Awesome
 
