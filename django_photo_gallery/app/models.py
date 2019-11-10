@@ -5,8 +5,8 @@ from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
  
-# from imagekit.models import ProcessedImageField
-# from imagekit.processors import ResizeToFit
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 from datetime import datetime
 
 def event_date(start, end):
@@ -20,7 +20,6 @@ def event_date(start, end):
 class Article(models.Model):
     title = models.CharField(max_length=70)
     description = models.TextField(max_length=8192)
-    # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
     thumb = models.ImageField(upload_to='albums')
     is_visible = models.BooleanField(default=True)
     start_date = models.DateField(default=datetime.today)
@@ -41,7 +40,11 @@ class Article(models.Model):
 class ArticleImage(models.Model):
     # image = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
     image = models.ImageField(upload_to='albums')
-    # thumb = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(500)], format='JPEG')#, options={'quality': 90})
+    thumb = ImageSpecField(source='image',
+                                      processors=[ResizeToFit(300)],
+                                      format='JPEG',
+                                      options={'quality': 10})
+
     album = models.ForeignKey(Article, on_delete=models.CASCADE)
     alt = models.CharField(max_length=255, default=uuid.uuid4)
     caption = models.CharField(max_length=2048, default='')
