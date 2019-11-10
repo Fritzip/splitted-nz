@@ -1,5 +1,4 @@
 ﻿var title_place = "up";
-$( "#nav-bottom" ).hide();
 
 $( document ).ready( function() {
   $( ".sidenav" ).sidenav( {
@@ -37,7 +36,7 @@ function title_setup()
   if ( $( ".page-title" ).height() > 0.8 * $( ".page-title" ).width() &&
        title_place == "up" ) {
     $( ".page-title" ).detach().appendTo( "#nav-bottom" );
-    $( "#nav-bottom" ).show();
+    $( "#nav-bottom" ).css( 'display', 'flex' );
     title_place = "down";
   } else if ( 0.5 * ( $( window ).width() - $( ".nav-icons-right" ).width() -
                       $( ".nav-icons-left" ).width() ) >

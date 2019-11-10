@@ -203,6 +203,7 @@ nav #sidenav-toggle {
 
 #nav-bottom {
   justify-content: space-around;
+  display: none;
 }
 
 #nav-bottom .page-title {
