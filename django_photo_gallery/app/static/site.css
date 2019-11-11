@@ -16,6 +16,7 @@
 body {
     text-align: justify;
     text-justify: inter-word;  
+    background-color: rgb(245, 245, 245);
 }
 
 body, h1, h2, h3, h4, h5{
@@ -130,22 +131,36 @@ nav #sidenav-toggle {
 
 .sidenav {
   z-index: 1001;
+  background-color: rgb(245, 245, 245);
+  height: 100%;
+}
+
+.sidenav .user-view {
+    margin-bottom: 0px; 
+}
+
+.sidenav .user-view .email {
+    padding-bottom: 10px;
 }
 
 .sidenav li > a {
-    color: rgba(0, 0, 0, 0.87);
     display: block;
     font-size: 14px;
     font-weight: 500;
     height: 60px;
     line-height: 60px;
-    padding: 0 16px;
+    padding: 0 12px;
+}
+
+.sidenav li>a:hover {
+    background-color: rgba(0,0,0,0.1);
 }
 
 .sidenav li > a > img {
     width: 40px;
     height: 40px;
     vertical-align: inherit;
+    object-fit: cover;
 }
 
 .sidenav li > a > span {
