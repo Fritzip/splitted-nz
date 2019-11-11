@@ -9,7 +9,7 @@
 
 {% block content %}
 {% if sleepspots %}
-{% leaflet_map "spots" callback="window.map_init" %}
+{% leaflet_map "global" callback="window.map_init" %}
 {% endif %}
 {% endblock %}
 

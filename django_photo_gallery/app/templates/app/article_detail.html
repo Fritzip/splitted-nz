@@ -18,7 +18,7 @@
             <header class="col s12 m10 l8 offset-m1 offset-l2">
                 <h1>{{ article.title }}</h1>
                 {% if sleepspots %}
-                {% leaflet_map "spots" callback="window.map_init" %}
+                {% leaflet_map "article" callback="window.map_init" %}
                 {% endif %}
             </header>
             <section class="col s12 m10 l8 offset-m1 offset-l2">

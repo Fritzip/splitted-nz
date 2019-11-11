@@ -6,14 +6,16 @@
     
     var lineCoordinate = [];
 
-    function onEachFeatureClosure(map) {
+    function onEachFeatureClosure(map, id) {
         return function onEachFeature(feature, layer) {
             if (feature.properties && feature.properties.popupContent) {
                 layer.bindPopup(feature.properties.popupContent).on("click", ev => {
                     $(".zoom-in-popup").on("click", e => {
                         map.setView(ev.latlng, 12);
                     });
-                    $('.article-link-popup').hide();
+                    if(id != "global") {
+                        $('.article-link-popup').hide();
+                    }
                 });
 
                 lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
@@ -21,9 +23,9 @@
         }
     }
 
-    function map_init(map, options) {
+    function map_init(map, options) {  
         map.addControl(new L.Control.Fullscreen());
-        var sleepspots_overlay = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map)}).addTo(map);
+        var sleepspots_overlay = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
         if (collection.features.length > 0) {
             map.fitBounds(sleepspots_overlay.getBounds().pad(2));
             if (collection.features.length == 1) {
