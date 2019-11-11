@@ -77,7 +77,17 @@ var pswpInit = function( startsAtIndex ) {
     var options = {
       // optionName: 'option value'
       // for example:
-      index : startsAtIndex // start at first slide
+      index : startsAtIndex, // start at first slide
+      addCaptionHTMLFn : function( e, t ) {
+        return e.title ? ( t.children[0].innerHTML   = e.title,
+                           t.children[0].style.width = e.w * e.fitRatio + "px",
+                           !0 )
+                       : ( t.children[0].innerHTML = "", !1 )
+      },
+      timeToIdle : 2000,
+
+      shareEl : false,
+
     };
 
     // Initializes and opens PhotoSwipe

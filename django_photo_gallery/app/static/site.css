@@ -219,3 +219,24 @@ nav #sidenav-toggle {
   display: block;
   line-height: 1em;
   max-height: 2em; */
+
+.custom__pswp__caption {
+  background-color: rgba(0,0,0,.8); /*custom*/
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 44px; }
+  .pswp__caption small {
+    font-size: 11px;
+    color: #BBB;
+}
+.custom__pswp__caption__center {
+  text-align: left;
+  max-width: 85%; /*custom*/
+  margin: 0 auto;
+  font-size: 13px;
+  padding: 10px;
+  line-height: 20px;
+  color: #CCC; }
+}
