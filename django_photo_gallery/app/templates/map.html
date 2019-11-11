@@ -4,7 +4,7 @@
 {% load leaflet_tags %}
 {% load geojson_tags %}
 
-{% block title %}Where did you sleep last night ?{% endblock title %}
+{% block page-title %}Where did you sleep last night ?{% endblock page-title %}
 {% block title-link %}https://youtu.be/jyq-0TbBiWg?t=50{% endblock title-link %}
 
 {% block content %}
@@ -15,4 +15,9 @@
 
 {% block js %}
 {% include "mapjs.html" %}
+<script>
+    $(document).ready(function(){
+        $(".page-title").addClass("tooltipped").attr('data-position', 'bottom').attr('data-tooltip', '<i class="fab fa-2x fa-youtube"></i>').tooltip();
+    });
+</script>
 {% endblock %}
