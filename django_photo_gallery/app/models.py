@@ -4,7 +4,8 @@ import uuid
 from django.db import models
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
- 
+from django.urls import reverse
+
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFit
 from datetime import datetime
@@ -76,7 +77,7 @@ class SleepSpot(models.Model):
     def popupContent(self):
         popup = '<b>{}</b><br>{}'.format(self.title, event_date(self.start_date, self.end_date))
         if self.album:
-            article_link = 'Article : <a href="{}">{}</a>'.format(self.album.slug, self.album.title)
+            article_link = 'Article : <a href="{}">{}</a>'.format(reverse('article', args=(self.album.slug,)), self.album.title)
         else:
             article_link = 'Pas d\'article en rapport'
         
