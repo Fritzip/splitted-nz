@@ -48,7 +48,7 @@ class ArticleImage(models.Model):
 
     album = models.ForeignKey(Article, on_delete=models.CASCADE)
     alt = models.CharField(max_length=255, default=uuid.uuid4)
-    caption = models.CharField(max_length=2048, default='')
+    caption = models.TextField(max_length=2048, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     width = models.IntegerField(default=0)
     height = models.IntegerField(default=0)
