@@ -22,7 +22,7 @@
                 {% endif %}
             </header>
             <section class="col s12 m10 l8 offset-m1 offset-l2">
-                {{ article.description|linebreaks }}
+                {{ article.description|safe|linebreaks }}
 			</section>
 			
            <section class="col s12 m12 l10 offset-l1">
