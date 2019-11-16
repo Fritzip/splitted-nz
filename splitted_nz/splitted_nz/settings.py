@@ -14,13 +14,16 @@ ALLOWED_HOSTS = ['0.0.0.0','127.0.0.1','localhost','farges.ddns.net','192.168.1.
 INTERNAL_IPS = ('0.0.0.0','127.0.0.1','localhost',)
 
 INSTALLED_APPS = [
-    'app',
+    'splitted_nz',
+    'photo_gallery',
+    'geoloc_data',
     'leaflet',
     'djgeojson',
     'material',
     'material.admin',
     'import_export',
     'imagekit',
+    'django.contrib.gis',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +46,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
-ROOT_URLCONF = 'django_photo_gallery.urls'
+ROOT_URLCONF = 'splitted_nz.urls'
 
 TEMPLATES = [
     {
@@ -56,18 +59,29 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'app.context_processors.articles',
+                'photo_gallery.context_processors.articles',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'django_photo_gallery.wsgi.application'
+WSGI_APPLICATION = 'splitted_nz.wsgi.application'
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'splitted_nz',
+        'USER': 'fritzip',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -151,12 +165,12 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
-LEAFLET_CONFIG = {
-    'DEFAULT_CENTER': (-43.5, 172.6),
-    'DEFAULT_ZOOM': 7,
-    'MIN_ZOOM': 2,
-    'MAX_ZOOM': 19,
-    'RESET_VIEW': False,
-    'TILES': []
+# LEAFLET_CONFIG = {
+    # 'DEFAULT_CENTER': (-43.5, 172.6),
+    # 'DEFAULT_ZOOM': 7,
+    # 'MIN_ZOOM': 2,
+    # 'MAX_ZOOM': 19,
+    # 'RESET_VIEW': False,
+    # 'TILES': []
     # 'TILES': [('Outdoor', 'https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1', {'attribution': '&copy; Thunderforest'})]
-}
+# }

@@ -5,7 +5,7 @@ from django.http import HttpRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 
-from app.models import Article, ArticleImage, SleepSpot
+from photo_gallery.models import Article, ArticleImage, SleepSpot
 
 def gallery(request):
     articles_list = Article.objects.filter(is_visible=True).order_by('-created')
@@ -21,11 +21,11 @@ def gallery(request):
         articles = paginator.page(paginator.num_pages) 
         # If page is out of range (e.g.  9999), deliver last page of results.
 
-    return render(request, 'gallery.html', { 'articles': articles_list })
+    return render(request, 'photo_gallery/gallery.html', { 'articles': articles_list })
 
 def map(request):
     sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
-    return render(request, 'map.html', {'sleepspots': sleepspots_list})
+    return render(request, 'photo_gallery/map.html', {'sleepspots': sleepspots_list})
 
 class ArticleDetail(DetailView):
     model = Article
@@ -40,4 +40,4 @@ class ArticleDetail(DetailView):
 
 def handler404(request, exception):
     assert isinstance(request, HttpRequest)
-    return render(request, 'handler404.html', None, None, 404)
+    return render(request, 'photo_gallery/handler404.html', None, None, 404)

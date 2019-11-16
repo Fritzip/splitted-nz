@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "photo_gallery/layout.html" %}
 {% load staticfiles %}
 
 {% load leaflet_tags %}
@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block js %}
-{% include "mapjs.html" %}
+{% include "photo_gallery/mapjs.html" %}
 <script>
     $(document).ready(function(){
         $(".page-title").addClass("tooltipped").attr('data-position', 'bottom').attr('data-tooltip', '<i class="fab fa-2x fa-youtube"></i>').tooltip();

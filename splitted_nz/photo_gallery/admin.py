@@ -4,7 +4,7 @@ import os
 import re
 import uuid
 import zipfile
-import django_photo_gallery.settings
+import splitted_nz.settings
 from datetime import datetime
 from zipfile import ZipFile
 
@@ -13,8 +13,8 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from app.models import Article, ArticleImage, SleepSpot
-from app.forms import ArticleForm
+from photo_gallery.models import Article, ArticleImage, SleepSpot
+from photo_gallery.forms import ArticleForm
 
 patt_xmpcaption = re.compile("<dc:description>(.*)<\/dc:description>")
 
@@ -54,7 +54,7 @@ class ArticleModelAdmin(admin.ModelAdmin):
                     filename = '{0}{1}.jpg'.format(album.slug, str(uuid.uuid4())[-13:])
                     img.image.save(filename, contentfile)
                 
-                    filepath = '{0}/albums/{1}'.format(django_photo_gallery.settings.MEDIA_ROOT, filename)
+                    filepath = '{0}/albums/{1}'.format(splitted_nz.settings.MEDIA_ROOT, filename)
                     with Image.open(filepath) as i:
                         img.width, img.height = i.size
 
@@ -68,6 +68,7 @@ class ArticleImageModelAdmin(admin.ModelAdmin):
     list_display = ('alt', 'album')
     list_filter = ('album', 'created')
 
+
 from leaflet.admin import LeafletGeoAdmin
 from import_export import resources
 from import_export.fields import Field
@@ -75,6 +76,7 @@ from import_export.admin import ImportExportModelAdmin
 import json
 
 from djgeojson.fields import PointField
+
 
 class SleepSpotResource(resources.ModelResource):
     latitude = Field(attribute='latitude', column_name='latitude')

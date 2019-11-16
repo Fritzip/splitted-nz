@@ -1,5 +1,5 @@
 """
-WSGI config for django_photo_gallery project.
+WSGI config for splitted_nz project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
@@ -26,11 +26,11 @@ import sys
  
 from django.core.wsgi import get_wsgi_application 
  
-sys.path.append('/srv/http/django_photo_gallery') 
+sys.path.append('/srv/http/splitted_nz') 
 # adjust the Python version in the line below as needed 
-sys.path.append('/srv/http/django_photo_gallery/venv/lib/python3.7/site-packages') 
+sys.path.append('/srv/http/splitted_nz/venv/lib/python3.7/site-packages') 
  
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_photo_gallery.settings") 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "splitted_nz.settings") 
  
 try: 
     application = get_wsgi_application() 
