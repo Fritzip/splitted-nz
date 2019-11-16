@@ -243,11 +243,11 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-django_photo_gallery/venv/
-django_photo_gallery/media/
-django_photo_gallery/static/
-django_photo_gallery/app/migrations/
-django_photo_gallery/db.sqlite3
+splitted_nz/venv/
+splitted_nz/media/
+splitted_nz/static/
+splitted_nz/photo_gallery/migrations/
+splitted_nz/db.sqlite3
 #static/
 apache_config.txt
 *.pyc
