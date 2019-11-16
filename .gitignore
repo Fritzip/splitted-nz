@@ -243,13 +243,14 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
 splitted_nz/venv/
 splitted_nz/media/
 splitted_nz/static/
-splitted_nz/photo_gallery/migrations/
-splitted_nz/db.sqlite3
-#static/
+migrations/
+*.sqlite3
 apache_config.txt
 *.pyc
 *.sublime-project
 *.sublime-workspace
+*.json
