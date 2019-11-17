@@ -28,7 +28,6 @@
         var sleepspots_overlay = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
         if (collection.features.length > 0) {
             if (collection.features.length == 1) {
-                console.log(collection.features[0].geometry.coordinates);
                 map.setView([collection.features[0].geometry.coordinates[1], collection.features[0].geometry.coordinates[0]], 12);
             }
             else {
