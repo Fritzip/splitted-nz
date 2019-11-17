@@ -33,11 +33,22 @@ class ArticleAdmin(ImportExportModelAdmin):
     resource_class = ArticleResource
 
     def save_model(self, request, obj, form, change):
+        uploadto = 'albums'
+        if not os.path.exists(os.path.join(splitted_nz.settings.MEDIA_ROOT, uploadto)):
+            os.makedirs(os.path.join(splitted_nz.settings.MEDIA_ROOT, uploadto))
         if form.is_valid():
             album = form.save(commit=False)
             album.modified = datetime.now()
-            album.thumb.name = 'thumb-{0}'.format(album.slug)
             album.save()
+
+            new_thumb_name = os.path.join(uploadto, 'thumb-{}.jpg'.format(album.slug))
+            filepath_src = '{}{}'.format(splitted_nz.settings.MEDIA_ROOT, str(album.thumb))
+            filepath_dest = '{}{}'.format(splitted_nz.settings.MEDIA_ROOT, new_thumb_name)
+
+            album.thumb = new_thumb_name
+            os.rename(filepath_src, filepath_dest)
+            album.save()
+
             if form.cleaned_data['zip'] != None:
                 fzip = zipfile.ZipFile(form.cleaned_data['zip'])
                 for filename in sorted(fzip.namelist()):
@@ -60,11 +71,11 @@ class ArticleAdmin(ImportExportModelAdmin):
                     else:
                         img.caption = ""
                     filename = '{0}.jpg'.format(str(uuid.uuid4())[-12:])
-                    directory = '{0}albums/{1}'.format(splitted_nz.settings.MEDIA_ROOT, album.slug)
+                    directory = os.path.join(splitted_nz.settings.MEDIA_ROOT, uploadto, album.slug)
                     if not os.path.exists(directory):
                         os.makedirs(directory)
-                    img.image.save('{0}/{1}'.format(album.slug, filename), contentfile)
-                    filepath = '{0}/{1}'.format(directory, filename)
+                    img.image.save(os.path.join(uploadto, album.slug, filename), contentfile)
+                    filepath = os.path.join(directory, filename)
                     with Image.open(filepath) as i:
                         img.width, img.height = i.size
 

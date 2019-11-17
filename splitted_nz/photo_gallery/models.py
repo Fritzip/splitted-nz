@@ -21,7 +21,7 @@ def event_date(start, end):
 class Article(models.Model):
     title = models.CharField(max_length=70)
     description = models.TextField(max_length=8192)
-    thumb = models.ImageField(upload_to='albums')
+    thumb = models.ImageField()
     is_visible = models.BooleanField(default=True)
     start_date = models.DateField(default=datetime.today)
     end_date = models.DateField(null=True, blank=True)
@@ -40,7 +40,7 @@ class Article(models.Model):
 
 class ArticleImage(models.Model):
     # image = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
-    image = models.ImageField(upload_to='albums')
+    image = models.ImageField()
     thumb = ImageSpecField(source='image',
                                       processors=[ResizeToFit(300)],
                                       format='JPEG',
