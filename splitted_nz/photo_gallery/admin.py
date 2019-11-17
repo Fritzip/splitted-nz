@@ -72,58 +72,14 @@ class ArticleAdmin(ImportExportModelAdmin):
 
 admin.site.register(Article, ArticleAdmin)
 
-@admin.register(ArticleImage)
-class ArticleImageModelAdmin(admin.ModelAdmin):
+
+class ArticleImageResource(resources.ModelResource):
+    class Meta:
+        model = ArticleImage
+
+class ArticleImageAdmin(ImportExportModelAdmin):
     list_display = ('alt', 'album')
     list_filter = ('album', 'created')
+    resource_class = ArticleImageResource
 
-
-
-from leaflet.admin import LeafletGeoAdmin
-from import_export import resources
-from import_export.fields import Field
-from import_export.admin import ImportExportModelAdmin
-import json
-
-from djgeojson.fields import PointField
-
-
-class SleepSpotResource(resources.ModelResource):
-    latitude = Field(attribute='latitude', column_name='latitude')
-    longitude = Field(attribute='longitude', column_name='longitude')
-
-    class Meta:
-        model = SleepSpot
-        fields = ('id','album','title','start_date','end_date','latitude','longitude' )
-        exclude = ('geom')
-        export_order = ('id','album','title','start_date','end_date','latitude','longitude' )
-
-    def before_save_instance(self, instance, using_transactions, dry_run):
-        longitude = float(getattr(instance, 'longitude'))
-        latitude = float(getattr(instance, 'latitude'))
-
-        instance.geom = {'type': 'Point', 'coordinates': [longitude, latitude]}
-        return instance
-
-    def dehydrate_longitude(self, sleepspot):
-        try:
-            geomjson = sleepspot.geom
-            if type(geomjson) is str:
-                geomjson = json.loads(geomjson.replace("\'", "\""))
-            return geomjson['coordinates'][0]
-        except:
-            pass
-
-    def dehydrate_latitude(self, sleepspot):
-        try:
-            geomjson = sleepspot.geom
-            if type(geomjson) is str:
-                geomjson = json.loads(geomjson.replace("\'", "\""))
-            return geomjson['coordinates'][1]
-        except:
-            pass
-
-@admin.register(SleepSpot)
-class SleepSpotModelAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
-    list_display = ('title', 'start_date', 'end_date', 'album')
-    resource_class = SleepSpotResource
+admin.site.register(ArticleImage, ArticleImageAdmin)
