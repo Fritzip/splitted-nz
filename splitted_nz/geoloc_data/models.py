@@ -27,7 +27,7 @@ class Spot(models.Model):
 
 
 class DatedSpot(models.Model):
-    album = models.ForeignKey(Article, on_delete=models.PROTECT, blank=True, null=True)
+    album = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=256)
     
     start_date = models.DateField(null=True, blank=True)
