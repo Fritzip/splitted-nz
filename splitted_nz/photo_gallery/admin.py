@@ -97,3 +97,5 @@ class ArticleImageAdmin(ImportExportModelAdmin):
     resource_class = ArticleImageResource
 
 admin.site.register(ArticleImage, ArticleImageAdmin)
+
+admin.site.register(SleepSpot)

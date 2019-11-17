@@ -5,7 +5,8 @@ from django.http import HttpRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 
-from photo_gallery.models import Article, ArticleImage, SleepSpot
+from photo_gallery.models import Article, ArticleImage
+from geoloc_data.models import DatedSpot
 
 def gallery(request):
     articles_list = Article.objects.filter(is_visible=True).order_by('-created')
@@ -23,9 +24,9 @@ def gallery(request):
 
     return render(request, 'photo_gallery/gallery.html', { 'articles': articles_list })
 
-def map(request):
-    sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
-    return render(request, 'photo_gallery/map.html', {'sleepspots': sleepspots_list})
+# def map(request):
+#     sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
+#     return render(request, 'photo_gallery/map.html', {'sleepspots': sleepspots_list})
 
 class ArticleDetail(DetailView):
     model = Article
@@ -35,7 +36,7 @@ class ArticleDetail(DetailView):
         context = super(ArticleDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the images
         context['images'] = ArticleImage.objects.filter(album=self.object.id).order_by('alt')
-        context['sleepspots'] = SleepSpot.objects.filter(album=self.object.id).order_by('-start_date')
+        context['sleepspots'] = DatedSpot.objects.filter(album=self.object.id).order_by('-start_date')
         return context
 
 def handler404(request, exception):

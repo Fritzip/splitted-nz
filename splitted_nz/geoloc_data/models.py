@@ -14,18 +14,6 @@ def event_date(start, end):
     else:
         return start.strftime("%d %b") + " - " + end.strftime("%d %b %Y")
 
-class Spot(models.Model):
-    name = models.CharField(max_length=100, blank=False)
-    geometry = geomodels.PointField()
-
-    class Meta:
-        # order of drop-down list items
-        ordering = ('name',)
-
-        # plural form in admin view
-        verbose_name_plural = 'spots'
-
-
 class DatedSpot(models.Model):
     album = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=256)

@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^(?P<slug>[-\w]+)$', views.ArticleDetail.as_view(), name='article'), 
 
     # Map
-    url(r'^map/$', views.map, name='map'),
+    #url(r'^map/$', views.map, name='map'),
 ]

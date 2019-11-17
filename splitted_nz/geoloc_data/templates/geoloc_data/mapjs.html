@@ -10,7 +10,6 @@
         return function onEachFeature(feature, layer) {
             if (feature.properties && feature.properties.popupContent) {
                 layer.bindPopup(feature.properties.popupContent).on("click", ev => {
-                    console.log(ev);
                     $(".zoom-in-popup").on("click", e => {
                         map.setView(ev.latlng, 12);
                     });
@@ -28,16 +27,19 @@
         map.addControl(new L.Control.Fullscreen());
         var sleepspots_overlay = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
         if (collection.features.length > 0) {
-            map.fitBounds(sleepspots_overlay.getBounds().pad(2));
             if (collection.features.length == 1) {
-                map.zoomOut(8);
+                map.setView([collection.features[0].geometry.coordinates[1], collection.features[0].geometry.coordinates[0]], 12);
+            }
+            else {
+                map.fitBounds(sleepspots_overlay.getBounds().pad(2));
             }
         }
 
         var path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
 
         var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
-        var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'); 
+        // .addTo(map);
 
         var baseMaps = {
             "OSM" : classic,
@@ -46,7 +48,7 @@
 
         var overlayMaps = {
             "SleepSpots": sleepspots_overlay,
-            // "Path": path_overlay
+            "Path": path_overlay
         };
         
         L.control.layers(baseMaps, overlayMaps).addTo(map);
