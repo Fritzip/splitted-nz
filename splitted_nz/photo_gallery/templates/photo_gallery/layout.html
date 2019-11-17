@@ -22,11 +22,11 @@
                 <div class="flex-container-row nav-wrapper" id="nav-top">
                     <div class="flex-container-row nav-icons-left">
                         <a href="#" data-target="slide-out" class="show-on-large" id="sidenav-toggle"><i class="nav-icon fas fa-bars"></i></a>
-                        <a href="{% url 'gallery' %}" class="tooltipped" id="home-icon" data-position="bottom" data-tooltip="Home"><i class="nav-icon fas fa-kiwi-bird"></i></a>
+                        <a href="{% url 'photo_gallery:gallery' %}" class="tooltipped" id="home-icon" data-position="bottom" data-tooltip="Home"><i class="nav-icon fas fa-kiwi-bird"></i></a>
                     </div>
-                    <a class="page-title" href="{% block title-link %}{% url 'gallery' %}{% endblock title-link %}">{% block page-title %}Splitted NZ{% endblock page-title %}</a>
+                    <a class="page-title" href="{% block title-link %}{% url 'photo_gallery:gallery' %}{% endblock title-link %}">{% block page-title %}Splitted NZ{% endblock page-title %}</a>
                     <div class="flex-container-row nav-icons-right">
-                        <a class="tooltipped" data-position="bottom" data-tooltip="Map" href="{% url 'map' %}"><i class="nav-icon fas fa-map-marked-alt"></i></a> 
+                        <a class="tooltipped" data-position="bottom" data-tooltip="Map" href="{% url 'photo_gallery:map' %}"><i class="nav-icon fas fa-map-marked-alt"></i></a> 
                         <a href="{% url 'admin:index' %}"><i class="nav-icon fas fa-user-lock"></i></a>
                     </div>
                 </div>
@@ -42,9 +42,10 @@
                 <span class="white-text shadowed-black-text email">maxime.sainlot@gmail.com</span>
               </div></li>
               {% for article in article_list_cp %}
-                <li><a class="waves-effect" href="{% url 'article' article.1 %}">
+                <li><a class="waves-effect" href="{% url 'photo_gallery:article' article.1 %}">
                     <img class="responsive-img circle" src="{{ article.3.url }}">
-                    <span>{{ article.0 }}</span><span class=sidenav-li-date>{{ article.2 }}</span></a></li>
+                    <span>{{ article.0 }}</span><span class=sidenav-li-date>{{ article.2 }}</span>
+                </a></li>
               {% endfor %}
             </ul>
         </div>

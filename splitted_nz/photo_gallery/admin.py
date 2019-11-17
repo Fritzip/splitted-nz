@@ -13,17 +13,24 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from photo_gallery.models import Article, ArticleImage, SleepSpot
-from photo_gallery.forms import ArticleForm
+from .models import Article, ArticleImage, SleepSpot
+from .forms import ArticleForm
+
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
 
 patt_xmpcaption = re.compile("<dc:description>(.*)<\/dc:description>")
 
-@admin.register(Article)
-class ArticleModelAdmin(admin.ModelAdmin):
+class ArticleResource(resources.ModelResource):
+    class Meta:
+        model = Article
+
+class ArticleAdmin(ImportExportModelAdmin):
     form = ArticleForm
     prepopulated_fields = {'slug': ('title',)}
     # list_display = ('title', 'start_date')
     list_filter = ('start_date',)
+    resource_class = ArticleResource
 
     def save_model(self, request, obj, form, change):
         if form.is_valid():
@@ -63,12 +70,15 @@ class ArticleModelAdmin(admin.ModelAdmin):
                 fzip.close() 
             super(ArticleModelAdmin, self).save_model(request, obj, form, change)
 
+admin.site.register(Article, ArticleAdmin)
+
 @admin.register(ArticleImage)
 class ArticleImageModelAdmin(admin.ModelAdmin):
     list_display = ('alt', 'album')
     list_filter = ('album', 'created')
 
 
+"""
 from leaflet.admin import LeafletGeoAdmin
 from import_export import resources
 from import_export.fields import Field
@@ -117,3 +127,4 @@ class SleepSpotResource(resources.ModelResource):
 class SleepSpotModelAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'album')
     resource_class = SleepSpotResource
+"""

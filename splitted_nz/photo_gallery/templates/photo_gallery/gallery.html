@@ -8,7 +8,7 @@
         {% for article in article_list_cp %}
         <div class="col s12 m5 l4 push-m1">
             <div class="card dpg-album-card">
-                <a  href="{% url 'article' article.1 %}"}>
+                <a  href="{% url 'photo_gallery:article' article.1 %}"}>
                 <div class="card-image">
                     <img src="{{ article.3.url }}" alt="{{ article.0 }}" class="dpg-album-card-image" />
                     <span class="white-text shadowed-black-text" style="position: absolute; margin: 20px; top:0%; right: 0%">{{ article.2 }}</span>

@@ -77,7 +77,7 @@ class SleepSpot(models.Model):
     def popupContent(self):
         popup = '<b>{}</b><br>{}'.format(self.title, event_date(self.start_date, self.end_date))
         if self.album:
-            article_link = 'Article : <a href="{}">{}</a>'.format(reverse('article', args=(self.album.slug,)), self.album.title)
+            article_link = 'Article : <a href="{}">{}</a>'.format(reverse('photo_gallery:article', args=(self.album.slug,)), self.album.title)
         else:
             article_link = 'Pas d\'article en rapport'
         

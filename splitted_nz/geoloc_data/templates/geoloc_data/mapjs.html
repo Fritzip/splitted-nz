@@ -1,0 +1,60 @@
+{% load leaflet_tags %}
+{% load geojson_tags %}
+
+<script type="text/javascript">
+    var collection = {{ sleepspots|geojsonfeature:"popupContent"|safe }};
+    
+    var lineCoordinate = [];
+
+    function onEachFeatureClosure(map, id) {
+        return function onEachFeature(feature, layer) {
+            if (feature.properties && feature.properties.popupContent) {
+                layer.bindPopup(feature.properties.popupContent).on("click", ev => {
+                    console.log(ev);
+                    $(".zoom-in-popup").on("click", e => {
+                        map.setView(ev.latlng, 12);
+                    });
+                    if(id != "global") {
+                        $('.article-link-popup').hide();
+                    }
+                });
+
+                lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
+            }
+        }
+    }
+
+    function map_init(map, options) {  
+        map.addControl(new L.Control.Fullscreen());
+        var sleepspots_overlay = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
+        if (collection.features.length > 0) {
+            map.fitBounds(sleepspots_overlay.getBounds().pad(2));
+            if (collection.features.length == 1) {
+                map.zoomOut(8);
+            }
+        }
+
+        var path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+
+        var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
+        var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        var baseMaps = {
+            "OSM" : classic,
+            "Outdoor": outdoor
+        };
+
+        var overlayMaps = {
+            "SleepSpots": sleepspots_overlay,
+            // "Path": path_overlay
+        };
+        
+        L.control.layers(baseMaps, overlayMaps).addTo(map);
+    }
+
+</script>
+
+{% leaflet_js %}
+{% leaflet_css %}
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js' defer></script>
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
