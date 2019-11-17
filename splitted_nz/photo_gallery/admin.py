@@ -36,6 +36,7 @@ class ArticleAdmin(ImportExportModelAdmin):
         if form.is_valid():
             album = form.save(commit=False)
             album.modified = datetime.now()
+            album.thumb.name = 'thumb-{0}'.format(album.slug)
             album.save()
             if form.cleaned_data['zip'] != None:
                 fzip = zipfile.ZipFile(form.cleaned_data['zip'])
@@ -58,17 +59,19 @@ class ArticleAdmin(ImportExportModelAdmin):
                         img.caption = xmp_str[0]
                     else:
                         img.caption = ""
-                    filename = '{0}{1}.jpg'.format(album.slug, str(uuid.uuid4())[-13:])
-                    img.image.save(filename, contentfile)
-                
-                    filepath = '{0}/albums/{1}'.format(splitted_nz.settings.MEDIA_ROOT, filename)
+                    filename = '{0}.jpg'.format(str(uuid.uuid4())[-12:])
+                    directory = '{0}albums/{1}'.format(splitted_nz.settings.MEDIA_ROOT, album.slug)
+                    if not os.path.exists(directory):
+                        os.makedirs(directory)
+                    img.image.save('{0}/{1}'.format(album.slug, filename), contentfile)
+                    filepath = '{0}/{1}'.format(directory, filename)
                     with Image.open(filepath) as i:
                         img.width, img.height = i.size
 
                     # img.thumb.save('thumb-{0}'.format(filename), contentfile)
                     img.save()
                 fzip.close() 
-            super(ArticleModelAdmin, self).save_model(request, obj, form, change)
+            super(ArticleAdmin, self).save_model(request, obj, form, change)
 
 admin.site.register(Article, ArticleAdmin)
 
