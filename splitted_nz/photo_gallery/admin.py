@@ -78,7 +78,7 @@ class ArticleImageModelAdmin(admin.ModelAdmin):
     list_filter = ('album', 'created')
 
 
-"""
+
 from leaflet.admin import LeafletGeoAdmin
 from import_export import resources
 from import_export.fields import Field
@@ -127,4 +127,3 @@ class SleepSpotResource(resources.ModelResource):
 class SleepSpotModelAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'album')
     resource_class = SleepSpotResource
-"""
