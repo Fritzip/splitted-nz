@@ -29,9 +29,6 @@ class Article(models.Model):
     modified = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=50, unique=True)
 
-    #def get_absolute_url(self):
-    #    return reverse('album', kwargs={'slug':self.slug})
-
     def get_event_date(self):
         return event_date(self.start_date, self.end_date)
 
@@ -44,7 +41,7 @@ class ArticleImage(models.Model):
     thumb = ImageSpecField(source='image',
                                       processors=[ResizeToFit(300)],
                                       format='JPEG',
-                                      options={'quality': 10})
+                                      options={'quality': 10}) # CACHE folder in media/
 
     album = models.ForeignKey(Article, on_delete=models.CASCADE)
     alt = models.CharField(max_length=255, default=uuid.uuid4)
@@ -57,6 +54,10 @@ class ArticleImage(models.Model):
 @receiver(post_delete, sender=ArticleImage)
 def submission_delete(sender, instance, **kwargs):
     instance.image.delete(False) 
+
+@receiver(post_delete, sender=Article)
+def submission_delete(sender, instance, **kwargs):
+    instance.thumb.delete(False) 
 
 class Post(models.Model):
     text = models.TextField(max_length=1024)
