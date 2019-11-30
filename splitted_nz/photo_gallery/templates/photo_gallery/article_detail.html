@@ -29,7 +29,7 @@
                 <div class="container">
                     <div class="row center-align">
                         {% for item in images %}
-                        <div class="col center-align s12 m5 l4 push-m1">
+                        <div class="col center-align s12 m5 l4 push-m1 card-container" id="{{forloop.counter0}}">
                         <div class="card dpg-album-card">
                         <a  href="javascript:pswpInit({{ forloop.counter0 }});"}>
                             <div class="card-image">
@@ -163,6 +163,45 @@
     <script>
         $('.asyncImage').each(function(i,obj){
             $(this).attr('src', $(this).data('src'));
+        })
+    </script>
+    <script>
+        function insertImgCard(dest, srccln) {
+            $(srccln).insertAfter($(dest)).wrap( "<div class='row center-align'></div>" );
+            // $(dest).parent().css({'display':'inline-block', 'margin':0, 'padding':0});
+            $(srccln).removeClass( "m5 l4 card-container" ).addClass( "m10" );
+            $(".dpg-album-card-image", srccln).css({'height':'auto', 'max-height':'350px'});
+            var cnt = $("a",srccln).contents();
+            $("a", srccln).replaceWith(cnt);
+            $(dest).remove();
+        }
+
+        function addCaption(imgcontainer, attr) {
+            if (typeof attr !== typeof undefined && attr !== false) {
+                $(".card-image", imgcontainer).append($("<span class='card-title' style='font-size:inherit;background-color: rgba(0,0,0,0.5);width: 100%;'>"+attr+"</span>"));
+                $(".card-title", imgcontainer).hide();
+                $(".card-image", imgcontainer).hover(
+                  function () {
+                    $(".card-title", imgcontainer).fadeIn(200);
+                  }, 
+                  function () {
+                    $(".card-title", imgcontainer).fadeOut(200);
+                  }
+                );
+            }
+        }
+
+        $('inserted-img').each(function(i,obj){
+            var that = $("#"+$(this).attr('id')+".card-container").clone();
+            insertImgCard($(this), $(that));
+        })
+
+        $('static-img').each(function(i,obj){
+            var caption = $(this).attr('caption');
+            var that = $(".card-container").first().clone();
+            insertImgCard($(this), $(that));
+            $(".dpg-album-card-image", that).attr('src', $(this).attr('src'));
+            addCaption($(that), caption);
         })
     </script>
 {% endblock %}
