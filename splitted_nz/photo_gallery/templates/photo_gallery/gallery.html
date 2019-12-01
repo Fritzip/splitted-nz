@@ -7,7 +7,7 @@
     <div class="row">
         {% for article in article_list_cp %}
         <div class="col s12 m5 l4 push-m1">
-            <div class="card dpg-album-card">
+            <div class="card hoverable dpg-album-card">
                 <a  href="{% url 'photo_gallery:article' article.1 %}"}>
                 <div class="card-image">
                     <img src="{{ article.3.url }}" alt="{{ article.0 }}" class="dpg-album-card-image" />

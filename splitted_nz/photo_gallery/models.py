@@ -32,6 +32,17 @@ class Article(models.Model):
     def get_event_date(self):
         return event_date(self.start_date, self.end_date)
 
+    @property
+    def letters(self):
+        ltitle = self.title.split()
+        if not ltitle:
+            return ""
+        if len(ltitle) == 1:
+            return self.title[0:2].upper()
+        for word in ('et','à'):
+            ltitle = list(filter((word).__ne__, ltitle))
+        return ltitle[0][0].upper()+ltitle[1][0].upper()
+
     def __str__(self):
         return self.title
 

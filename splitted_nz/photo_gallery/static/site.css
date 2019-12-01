@@ -120,6 +120,9 @@ nav #sidenav-toggle {
     overflow : hidden;
 }
 
+.card-title {
+  text-align: left;
+}
 
 .container {
   width: 100%; !important
@@ -215,9 +218,21 @@ nav #sidenav-toggle {
 
 .zoom-in-popup {
   position: absolute;
-  bottom: -10px;
-  right: -10px;
+  bottom: -15px;
+  right: -15px;
   margin: 0;
+}
+
+.extra-marker i {
+    margin-left:2px;
+}
+
+.extra-marker i.custom-marker {
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 12px;
+    margin-top: 13px;
+    margin-left:1px;
 }
 
 #nav-bottom {
@@ -230,6 +245,12 @@ nav #sidenav-toggle {
   /*overflow: hidden;*/
   /*text-overflow: ellipsis;*/
   /*font-size: calc(2vw + 2vh);*/
+}
+
+a.btn {
+    text-transform: none;
+    color: rgb(245,245,245);
+    padding: 0 10px;
 }
 /*  
   overflow: hidden;

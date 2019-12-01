@@ -25,15 +25,12 @@ class DatedSpot(models.Model):
 
     @property
     def popupContent(self):
-        popup = '<b>{}</b><br>{}'.format(self.name, event_date(self.start_date, self.end_date))
-        if self.album:
-            article_link = 'Article : <a href="{}">{}</a>'.format(reverse('photo_gallery:article', args=(self.album.slug,)), self.album.title)
-        else:
-            article_link = 'Pas d\'article en rapport'
+        popup = '<i class="fas fa-bed" style="margin:auto 5px;"></i><b>{}</b><br><i class="fas fa-calendar-alt" style="margin:auto 5px;"></i>{}'.format(self.name, event_date(self.start_date, self.end_date))
         
-        popup += '<br><span class=article-link-popup>{}</span>'.format(article_link)
+        if self.album:
+            popup += '<br><a class="article-link-popup flex-container-row btn btn-small waves-effect waves-light" data-letters="{}" href="{}"><i class="fas fa-newspaper"></i><span style="margin:auto 5px;font-weight:bold">{}</span><i class="fas fa-angle-right"></i></a>'.format(self.album.letters, reverse('photo_gallery:article', args=(self.album.slug,)), self.album.title)
 
-        popup += '<span class="btn-floating btn-small waves-effect waves-light zoom-in-popup"><i class="fas fa-compress-arrows-alt"></i></span>'
+        popup += '<span class=" zoom-in-popup btn-floating btn-small waves-effect waves-light"><i class="fas fa-compress-arrows-alt"></i></span>'
 
         return popup
 
