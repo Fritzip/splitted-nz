@@ -28,7 +28,8 @@ class ArticleResource(resources.ModelResource):
 class ArticleAdmin(ImportExportModelAdmin):
     form = ArticleForm
     prepopulated_fields = {'slug': ('title',)}
-    # list_display = ('title', 'start_date')
+    list_display = ('title', 'start_date','is_visible',)
+    ordering = ('-start_date',)
     list_filter = ('start_date',)
     resource_class = ArticleResource
 

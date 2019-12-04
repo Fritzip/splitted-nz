@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 
 from photo_gallery.models import Article, ArticleImage
-from geoloc_data.models import DatedSpot
+from geoloc_data.models import DatedSpot, GPXTrack
 
 def gallery(request):
     articles_list = Article.objects.filter(is_visible=True).order_by('-created')
@@ -28,6 +28,8 @@ def gallery(request):
 #     sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
 #     return render(request, 'photo_gallery/map.html', {'sleepspots': sleepspots_list})
 
+# from django.core.serializers import serialize
+
 class ArticleDetail(DetailView):
     model = Article
 
@@ -36,7 +38,9 @@ class ArticleDetail(DetailView):
         context = super(ArticleDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the images
         context['images'] = ArticleImage.objects.filter(album=self.object.id).order_by('alt')
-        context['sleepspots'] = DatedSpot.objects.filter(album=self.object.id).order_by('-start_date')
+        # context['sleepspots'] = DatedSpot.objects.filter(album=self.object.id).order_by('-start_date')
+        # context['gpxtracks'] = serialize('geojson', GPXTrack.objects.filter(article=self.object.id),geometry_field='wkb_geometry', fields=('name','popupContent',))
+
         return context
 
 def handler404(request, exception):

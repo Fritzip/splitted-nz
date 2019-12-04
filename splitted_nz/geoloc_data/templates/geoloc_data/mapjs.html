@@ -13,8 +13,7 @@
 
 
 <script type="text/javascript">
-    var collection = {{ sleepspots|geojsonfeature:"popupContent"|safe }};
-    
+
     var lineCoordinate = [];
 
     var simpleicon = L.ExtraMarkers.icon({
@@ -23,8 +22,7 @@
         markerColor: 'blue',
     });
 
-
-    function onEachFeatureClosure(map, id) {
+    function onEachSleepSpotFeature(map, id) {
         return function onEachFeature(feature, layer) {
             if (feature.properties && feature.properties.popupContent) {
                 layer.bindPopup(feature.properties.popupContent).on("click", ev => {
@@ -59,35 +57,69 @@
         }
     }
 
-    function map_init(map, options) {  
-        map.addControl(new L.Control.Fullscreen());
-        var sleepspots_overlay = L.geoJson(collection, {onEachFeature: onEachFeatureClosure(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
-        if (collection.features.length > 0) {
-            if (collection.features.length == 1) {
-                map.setView([collection.features[0].geometry.coordinates[1], collection.features[0].geometry.coordinates[0]], 12);
-            }
-            else {
-                map.fitBounds(sleepspots_overlay.getBounds().pad(2));
+    function onEachGPXFeature(map, id) {
+        return function onEachFeature(feature, layer) {
+            if (feature.properties && feature.properties.popupContent) {
+                layer.bindPopup(feature.properties.popupContent).on("click", ev => {
+                    if(id != "global") {
+                        $('.article-link-popup').hide();
+                    }
+                });
             }
         }
+    }
 
-        var path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+    function map_init(map, options) {  
+        map.addControl(new L.Control.Fullscreen());
+
+        var lcontrollayers = L.control.layers(null, null);
+
+        var bounds = L.latLngBounds();
+
+        $.getJSON("{% url 'geoloc_data:gpxtrack' slug 'sleepspots' %}", function(data){
+           var sleepspots_overlay = L.geoJson(data, {onEachFeature: onEachSleepSpotFeature(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
+            if (data.features.length > 0) {
+                lcontrollayers.addOverlay( sleepspots_overlay, "SleepSpots" );
+                if (data.features.length == 1) {
+                    // bounds = map.layerPointToLatLng([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]]);
+                    // console.log(bounds);
+                    map.setView([data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]], 12);
+
+                    bounds = map.getBounds();
+                } else {
+                    // map.fitBounds(sleepspots_overlay.getBounds().pad(1));
+
+                    var path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+                    lcontrollayers.addOverlay( path_overlay, "Path" );
+                    bounds.extend(sleepspots_overlay.getBounds().pad(1));      // Extend LatLngBounds with coordinates
+                }
+                map.fitBounds(bounds);
+            } else {
+                // no sleepspot associatied with this view
+                $(".leaflet-container-default").hide();
+            }
+        });
+
+        $.getJSON("{% url 'geoloc_data:gpxtrack' slug 'gpx' %}", function(data){
+            var gpx_overlay = L.geoJson(data, {onEachFeature: onEachGPXFeature(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
+            if (data.features.length > 0) {
+                lcontrollayers.addOverlay( gpx_overlay, "GPX" );
+                bounds.extend(gpx_overlay.getBounds());
+                map.fitBounds(bounds);
+            }
+        });
+
+
+
+
 
         var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
         var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'); 
-        // .addTo(map);
-
-        var baseMaps = {
-            "OSM" : classic,
-            "Outdoor": outdoor
-        };
-
-        var overlayMaps = {
-            "SleepSpots": sleepspots_overlay,
-            "Path": path_overlay
-        };
         
-        L.control.layers(baseMaps, overlayMaps).addTo(map);
+        lcontrollayers.addBaseLayer(classic,"OSM");
+        lcontrollayers.addBaseLayer(outdoor,"Outdoor");
+
+        lcontrollayers.addTo(map);
     }
 
 </script>
