@@ -15,15 +15,27 @@
 
     {% if article.is_visible %}
         <article class="row">
-            <header class="col s12 m10 l8 offset-m1 offset-l2">
+            <div class="col s12 m10 l8 offset-m1 offset-l2 flex-container-row" style="position: absolute;justify-content: flex-end; transform: translate(0px, -3px);clip-path: inset(3px);padding-bottom: 5px;height: auto;">
+                {% if prev %}
+                <a class="btn prev-next-btn waves-effect waves-light" href="{% url 'photo_gallery:article' prev %}"><i class="fas fa-angle-left"></i></a>
+                {% else %}
+                <a class="btn grey lighten-2 no-hover prev-next-btn"><i class="fas fa-angle-left"></i></a>
+                {% endif %}
+                {% if next %}
+                <a class="btn prev-next-btn waves-effect waves-light" href="{% url 'photo_gallery:article' next %}"><i class="fas fa-angle-right"></i></a>
+                {% else %}
+                <a class="btn grey lighten-2 no-hover prev-next-btn"><i class="fas fa-angle-right"></i></a>
+                {% endif %}
+            </div>
+            <header class="col s12 m10 l8 offset-m1 offset-l2 flex-container-row align-center" style="flex-wrap:wrap;">
                 <h1>{{ article.title }}</h1>
-                {% leaflet_map "article" callback="window.map_init" %}
             </header>
             <section class="col s12 m10 l8 offset-m1 offset-l2">
+                {% leaflet_map "article" callback="window.map_init" %}
                 {{ article.description|safe|linebreaks }}
 			</section>
 			
-           <section class="col s12 m12 l10 offset-l1">
+            <section class="col s12 m12 l10 offset-l1">
                 <div class="container">
                     <div class="row center-align">
                         {% for item in images %}

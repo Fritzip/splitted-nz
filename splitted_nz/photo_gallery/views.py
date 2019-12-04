@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-  
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
@@ -38,8 +38,19 @@ class ArticleDetail(DetailView):
         context = super(ArticleDetail, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the images
         context['images'] = ArticleImage.objects.filter(album=self.object.id).order_by('alt')
-        # context['sleepspots'] = DatedSpot.objects.filter(album=self.object.id).order_by('-start_date')
-        # context['gpxtracks'] = serialize('geojson', GPXTrack.objects.filter(article=self.object.id),geometry_field='wkb_geometry', fields=('name','popupContent',))
+
+        try:
+            next_article = self.object.get_next_by_start_date().slug
+        except Article.DoesNotExist:
+            next_article = None
+
+        try:
+            prev_article = self.object.get_previous_by_start_date().slug
+        except Article.DoesNotExist:
+            prev_article = None
+            
+        context['next'] = next_article
+        context['prev'] = prev_article
 
         return context
 

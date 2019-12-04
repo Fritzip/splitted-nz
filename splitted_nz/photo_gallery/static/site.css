@@ -71,16 +71,6 @@ nav #sidenav-toggle {
   height: 100%;
   vertical-align: sub;
 }
-/*header, body, footer {
-  padding-left: 300px;
-}
-
-@media only screen and (max-width : 992px) {
-  header, body, footer {
-    padding-left: 0;
-  }
-}
-    */    
 
 /* Materializecss overrrides */
 .carousel-slider {
@@ -102,18 +92,6 @@ nav #sidenav-toggle {
   opacity: 0.6;
 }
 
-/*.dpg-italic {
-  font-style: italic;
-}
-
-.dpg-icon {
-    max-width:4rem;
-    max-height:4rem;
-}
-.dpg-album-card, .dpg-album-image {
-    max-height:300px;
-}
-*/
 .dpg-album-card-image {
     height:250px;
     object-fit: cover;
@@ -248,13 +226,6 @@ nav #sidenav-toggle {
   display: none;
 }
 
-#nav-bottom .page-title {
-  /*white-space: nowrap;*/
-  /*overflow: hidden;*/
-  /*text-overflow: ellipsis;*/
-  /*font-size: calc(2vw + 2vh);*/
-}
-
 a.btn {
     text-transform: none;
     color: rgb(245,245,245);
@@ -263,13 +234,6 @@ a.btn {
     line-height: unset;
     font-size: unset;
 }
-/*  
-  overflow: hidden;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  display: block;
-  line-height: 1em;
-  max-height: 2em; */
 
 .custom__pswp__caption {
   background-color: rgba(0,0,0,.8); /*custom*/
@@ -314,6 +278,19 @@ a.btn {
   flex-wrap: nowrap;
 }
 
+.align-center {
+  align-items: center;
+}
+
+.prev-next-btn {
+  display: flex; /* or inline-flex */
+  flex-flow: row nowrap;
+  align-items: center;
+  margin: 0px 5px;
+  -webkit-box-shadow: none;
+  box-shadow: none; 
+}
+
 .flex-popup-col {
   display: flex;  
   flex-flow: column;
@@ -346,6 +323,15 @@ a.btn {
 .grid-popup-row i {
   padding: 3px;
 }
+
+.btn i {
+  padding: 3px;
+}
+
 .leaflet-popup-content-wrapper {
   max-width: 200px;
+}
+
+.no-hover {
+  pointer-events: none;
 }
