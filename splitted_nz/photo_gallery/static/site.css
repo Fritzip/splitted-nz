@@ -209,6 +209,7 @@ nav #sidenav-toggle {
 .leaflet-container {  /* all maps */
   width:  100%;
   height: 100%;
+  font-family: inherit;
 }
 
 /* Resize the "display_raw" textbox */
@@ -218,8 +219,15 @@ nav #sidenav-toggle {
 
 .zoom-in-popup {
   position: absolute;
-  bottom: -15px;
-  right: -15px;
+  bottom: -12px;
+  right: -12px;
+  margin: 0;
+}
+
+.top-left {
+  position: absolute;
+  top: -12px;
+  left: -12px;
   margin: 0;
 }
 
@@ -295,20 +303,25 @@ a.btn {
 
 .flex-popup-row {
   display: flex; /* or inline-flex */
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   justify-content: space-around;
   align-items: center;
   text-align: center;
-  padding: 2px;
+  /*padding: 2px;*/
+}
+
+.nowrap {
+  flex-wrap: nowrap;
 }
 
 .flex-popup-col {
   display: flex;  
   flex-flow: column;
-  /*border-style: double;*/
   text-align: center;
-  flex-grow: 1;
-  flex-basis: 0;
+  flex: 1 1 0px;
+  padding: 3px;
+  margin: 5px; 
+  align-self: stretch;
 }
 
 .flex-popup-row i {
@@ -334,5 +347,5 @@ a.btn {
   padding: 3px;
 }
 .leaflet-popup-content-wrapper {
-  width: 200px;
+  max-width: 200px;
 }
