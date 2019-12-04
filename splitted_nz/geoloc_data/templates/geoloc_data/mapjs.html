@@ -65,6 +65,9 @@
         return function onEachFeature(feature, layer) {
             if (feature.properties && feature.properties.popupContent) {
                 layer.bindPopup(feature.properties.popupContent).on("click", ev => {
+                    $(".zoom-in-popup").on("click", e => {
+                        map.fitBounds(layer.getBounds());
+                    });
                     if(id != "global") {
                         $('.article-link-popup').hide();
                     }

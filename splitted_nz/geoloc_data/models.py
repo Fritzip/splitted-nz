@@ -35,6 +35,9 @@ def popuparticlebtn(letters, slug, title):
                             <i class="fas fa-angle-right"></i>
                         </a>'''.format(letters, reverse('photo_gallery:article', args=(slug,)), title)
 
+def popupcenteronfeature():
+    return '<a class="zoom-in-popup btn-floating btn-small waves-effect waves-light"><i class="fas fa-compress-arrows-alt"></i></a>'
+
 class DatedSpot(models.Model):
     article = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(max_length=256)
@@ -51,7 +54,7 @@ class DatedSpot(models.Model):
         if self.article:
             popup += popuparticlebtn(self.article.letters, self.article.slug, self.article.title)
 
-        popup += '<a class="zoom-in-popup btn-floating btn-small waves-effect waves-light"><i class="fas fa-compress-arrows-alt"></i></a>'
+        popup += popupcenteronfeature()
 
         return popup
 
@@ -154,6 +157,8 @@ class GPXTrack(models.Model):
         if self.article:
             popup += popuparticlebtn(self.article.letters,self.article.slug,self.article.title) 
             
+        popup += popupcenteronfeature()
+
         popup += '<span class="top-left btn-floating btn-small red" style="cursor: default;"><i class="fas {}"></i></span>'.format(self.get_activity_icon())
 
         return popup
