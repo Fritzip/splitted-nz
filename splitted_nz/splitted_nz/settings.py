@@ -167,12 +167,12 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder'
 )
 
-# LEAFLET_CONFIG = {
+LEAFLET_CONFIG = {
     # 'DEFAULT_CENTER': (-43.5, 172.6),
     # 'DEFAULT_ZOOM': 7,
     # 'MIN_ZOOM': 2,
     # 'MAX_ZOOM': 19,
-    # 'RESET_VIEW': False,
+    'RESET_VIEW': False,
     # 'TILES': []
     # 'TILES': [('Outdoor', 'https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1', {'attribution': '&copy; Thunderforest'})]
-# }
+}

@@ -22,6 +22,10 @@
         markerColor: 'blue',
     });
 
+    var bounds = L.latLngBounds();
+
+    function locateBounds () { return bounds; }
+
     function onEachSleepSpotFeature(map, id) {
         return function onEachFeature(feature, layer) {
             if (feature.properties && feature.properties.popupContent) {
@@ -74,8 +78,6 @@
 
         var lcontrollayers = L.control.layers(null, null);
 
-        var bounds = L.latLngBounds();
-
         $.getJSON("{% url 'geoloc_data:gpxtrack' slug 'sleepspots' %}", function(data){
            var sleepspots_overlay = L.geoJson(data, {onEachFeature: onEachSleepSpotFeature(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
             if (data.features.length > 0) {
@@ -109,9 +111,7 @@
             }
         });
 
-
-
-
+        (new L.Control.ResetView(locateBounds)).addTo(map);
 
         var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
         var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'); 
