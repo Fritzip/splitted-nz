@@ -77,6 +77,8 @@ class GPXTrack(models.Model):
        max_length=32,
        choices=STATUS,
        default=BIKE,
+       blank=True,
+       null=True
     )
     elevation_gain = models.FloatField(blank=True, null=True)
     distance = models.FloatField(blank=True, null=True)
