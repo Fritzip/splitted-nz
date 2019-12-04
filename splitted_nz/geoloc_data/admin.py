@@ -6,6 +6,9 @@ from leaflet.admin import LeafletGeoAdmin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
+from django.conf.locale.en import formats as en_formats
+en_formats.DATETIME_FORMAT = "d M Y - H:i"
+
 class DatedSpotResource(resources.ModelResource):
     class Meta:
         model = DatedSpot
@@ -15,12 +18,16 @@ class DatedSpotAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
     ordering = ('-start_date',)
     resource_class = DatedSpotResource
 
-# register models in the admin site
 admin.site.register(DatedSpot, DatedSpotAdmin)
 
+class GPXTrackResource(resources.ModelResource):
+    class Meta:
+        model = GPXTrack
 
-# admin.site.register(RoutePoints, admin.GeoModelAdmin)
-# admin.site.register(Routes, admin.GeoModelAdmin)
-admin.site.register(GPXTrack, admin.GeoModelAdmin)
-# admin.site.register(TrackPoints, admin.GeoModelAdmin)
-# admin.site.register(Waypoints, admin.GeoModelAdmin)
+class GPXTrackAdmin(ImportExportModelAdmin):
+    list_display = ('name', 'status', 'start_date', 'distance', 'article')
+    list_filter = ('start_date', 'status')
+    ordering = ('-start_date',)
+    resource_class = GPXTrackResource
+
+admin.site.register(GPXTrack, GPXTrackAdmin)
