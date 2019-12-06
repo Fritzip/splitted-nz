@@ -17,6 +17,10 @@ class DatedSpotAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
     list_display = ('name', 'start_date', 'duration', 'article')
     ordering = ('-start_date',)
     resource_class = DatedSpotResource
+    settings_overrides =  {
+        'DEFAULT_CENTER': (-43.2016, 171.243), #for lack of anything better
+        'DEFAULT_ZOOM': 8,
+    }
 
 admin.site.register(DatedSpot, DatedSpotAdmin)
 
@@ -24,7 +28,7 @@ class GPXTrackResource(resources.ModelResource):
     class Meta:
         model = GPXTrack
 
-class GPXTrackAdmin(ImportExportModelAdmin):
+class GPXTrackAdmin(LeafletGeoAdmin, ImportExportModelAdmin):
     list_display = ('name', 'status', 'start_date', 'distance', 'article')
     list_filter = ('start_date', 'status')
     ordering = ('-start_date',)
