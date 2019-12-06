@@ -19,7 +19,7 @@
     var simpleicon = L.ExtraMarkers.icon({
         icon: 'fa-circle',
         prefix: 'fas',
-        markerColor: 'blue',
+        markerColor: 'blue-dark',
     });
 
     var bounds = L.latLngBounds();
@@ -73,6 +73,13 @@
                     }
                 });
             }
+            layer.setStyle({color :'#414654'}); 
+            layer.on('mouseover', function (e) {
+                layer.setStyle({color :'#55638A'}); 
+            });
+            layer.on('mouseout', function (e) {
+                layer.setStyle({color :'#414654'}); 
+            });
         }
     }
 
