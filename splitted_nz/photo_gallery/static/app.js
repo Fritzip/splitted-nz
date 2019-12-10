@@ -1,4 +1,4 @@
-﻿var title_place = "up";
+var title_place = "up";
 
 $( document ).ready( function() {
   $( ".sidenav" ).sidenav( {
@@ -87,6 +87,8 @@ var pswpInit = function( startsAtIndex ) {
       timeToIdle : 2000,
 
       shareEl : false,
+
+      barsSize : { top : 0, bottom : 0 },
 
     };
 
