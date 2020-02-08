@@ -30,8 +30,8 @@ sys.path.append('/srv/http/splitted_nz')
 # adjust the Python version in the line below as needed 
 sys.path.append('/srv/http/splitted_nz/venv/lib/python3.7/site-packages') 
  
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "splitted_nz.settings") 
- 
+#os.environ.setdefault("DJANGO_SETTINGS_MODULE", "splitted_nz.settings") 
+os.environ['DJANGO_SETTINGS_MODULE'] = "splitted_nz.settings"
 try: 
     application = get_wsgi_application() 
 except Exception: 
