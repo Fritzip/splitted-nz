@@ -20,7 +20,7 @@ def event_date(start, end):
 
 class Article(models.Model):
     title = models.CharField(max_length=70)
-    description = models.TextField(max_length=8192)
+    description = models.TextField(max_length=8192, null=True, blank=True)
     thumb = models.ImageField()
     is_visible = models.BooleanField(default=True)
     start_date = models.DateField(default=datetime.today)
