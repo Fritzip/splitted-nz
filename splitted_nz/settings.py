@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'splitted_nz',
     'photo_gallery',
     'geoloc_data',
+    'geodata',
     'leaflet',
     'djgeojson',
     'material',
@@ -67,23 +68,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'splitted_nz.wsgi.application'
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'splitted_nz',
-        'USER': 'fritzip',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#         'NAME': 'splitted_nz',
+#         'USER': 'fritzip',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 30240 
 
