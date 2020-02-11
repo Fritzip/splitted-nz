@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 
 from photo_gallery.models import Article, ArticleImage
-from geoloc_data.models import DatedSpot, GPXTrack
+from geodata.models import DatedSpot, GPXTrack
 
 def gallery(request):
     articles_list = Article.objects.filter(is_visible=True).order_by('-created')
@@ -57,3 +57,6 @@ class ArticleDetail(DetailView):
 def handler404(request, exception):
     assert isinstance(request, HttpRequest)
     return render(request, 'photo_gallery/handler404.html', None, None, 404)
+
+def unavailable(request):
+    return render(request, 'photo_gallery/article_detail.html')

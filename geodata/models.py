@@ -1,3 +1,8 @@
 from django.db import models
 
-# Create your models here.
+class DatedSpot(models.Model):
+    pass
+
+class GPXTrack(models.Model):
+    pass
+

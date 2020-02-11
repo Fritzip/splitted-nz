@@ -1,0 +1,21 @@
+{% extends "photo_gallery/layout.html" %}
+{% load staticfiles %}
+
+{% load leaflet_tags %}
+{% load geojson_tags %}
+
+{% block page-title %}Where did you sleep last night ?{% endblock page-title %}
+{% block title-link %}https://youtu.be/jyq-0TbBiWg?t=50{% endblock title-link %}
+
+{% block content %}
+{% leaflet_map "global" callback="window.map_init" %}
+{% endblock %}
+
+{% block js %}
+{% include "geoloc_data/mapjs.html" with slug="global" %}
+<script>
+    $(document).ready(function(){
+        $(".page-title").addClass("tooltipped").attr('data-position', 'bottom').attr('data-tooltip', '<i class="fab fa-2x fa-youtube"></i>').tooltip();
+    });
+</script>
+{% endblock %}
