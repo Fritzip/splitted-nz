@@ -1,0 +1,153 @@
+{% load leaflet_tags %}
+{% load geojson_tags %}
+{% load staticfiles %}
+
+{% leaflet_css %}
+<link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
+<link rel="stylesheet" href="{% static 'external/leaflet-extra-markers/css/leaflet.extra-markers.min.css' %}">
+<link rel="stylesheet" href="{% static 'site.css' %}" type="text/css" />
+
+{% leaflet_js %}
+<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js' defer></script>
+<script src="{% static 'external/Polyline.encoded.js' %}"></script>
+<script src="{% static 'external/leaflet-extra-markers/js/leaflet.extra-markers.min.js' %}"></script>
+
+
+<script type="text/javascript">
+    var sleepdspotsdata = {{ sleepspots|geojsonfeature:"popupContent"|safe }};
+
+    var lineCoordinate = [];
+
+    var simpleicon = L.ExtraMarkers.icon({
+        icon: 'fa-circle',
+        prefix: 'fas',
+        markerColor: 'blue-dark',
+    });
+
+    var bounds = L.latLngBounds();
+
+    function locateBounds () { return bounds; }
+
+    function onEachSleepSpotFeature(map, id) {
+        return function onEachFeature(feature, layer) {
+            if (feature.properties && feature.properties.popupContent) {
+                layer.bindPopup(feature.properties.popupContent).on("click", ev => {
+                    $(".zoom-in-popup").on("click", e => {
+                        map.setView(ev.latlng, 12);
+                    });
+                    if(id != "global") {
+                        $('.article-link-popup').hide();
+                    }
+                });
+                if(id != "global") {
+                    layer.setIcon(simpleicon);
+                } else {
+                    var tempDom = $('<output>').append($.parseHTML(feature.properties.popupContent));
+                    var popupjq = $('.article-link-popup', tempDom);
+                    if($(popupjq).hasClass('article-link-popup')) {
+                        var articleicon = L.ExtraMarkers.icon({
+                            icon: 'fa-number',
+                            number: $(popupjq).data("letters"),
+                            prefix: 'fas',
+                            markerColor: 'green-light',
+                            extraClasses: 'custom-marker'
+                        });
+                        layer.setIcon(articleicon);
+                    } else {
+                        layer.setIcon(simpleicon);                    
+                    }
+                }
+
+                lineCoordinate.push([feature.geometry.coordinates[1],feature.geometry.coordinates[0]]);
+            }
+        }
+    }
+
+    function map_init(map, options) {  
+        map.addControl(new L.Control.Fullscreen());
+
+        var lcontrollayers = L.control.layers(null, null);
+
+        ///////// Sleepspots
+        var sleepspots_overlay = L.geoJson(sleepdspotsdata, {onEachFeature: onEachSleepSpotFeature(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
+        if (sleepdspotsdata.features.length > 0) {
+            lcontrollayers.addOverlay( sleepspots_overlay, "SleepSpots" );
+            if (sleepdspotsdata.features.length == 1) {
+                map.setView([sleepdspotsdata.features[0].geometry.coordinates[1], sleepdspotsdata.features[0].geometry.coordinates[0]], 12);
+
+                bounds = map.getBounds();
+            } else {
+                var path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+                bounds.extend(sleepspots_overlay.getBounds().pad(0.5));      // Extend LatLngBounds with coordinates
+                lcontrollayers.addOverlay( path_overlay, "Path" );
+            }
+            map.fitBounds(bounds);
+        } else {
+            // no sleepspot associatied with this view
+            $(".leaflet-container-default").hide();
+        }
+
+        ///////// GPXTracks
+        // var tracks = {{ tracks | safe }};
+        var lg_tracks = new L.FeatureGroup();
+        var style_track = {
+                    color: 'blue',
+                    weight: 2,
+                    opacity: .7,
+                    lineJoin: 'round'
+                };
+        var style_track_hover = {
+                    color: 'blue',
+                    weight: 4,
+                    opacity: .7,
+                    lineJoin: 'round'
+                };
+        var tracks = [
+            {% for item in tracks %}
+                {
+                    name: '{{ item.name }}',
+                    polyline: '{{ item.polyline|escapejs }}',
+                    popup: '{{ item.popupContent|escapejs }}',
+                },
+            {% endfor %}
+        ];
+        for (let track of tracks ) {
+            var coordinates = L.Polyline.fromEncoded(track['polyline']).getLatLngs();
+            var polyline = L.polyline(
+                coordinates,
+                style_track
+            );
+            polyline.bindPopup(track['popup']).on("click", ev => {
+                $(".zoom-in-popup").on("click", e => {
+                    map.fitBounds(ev.target.getBounds());
+                });
+                if($(".leaflet-container-default").attr('id') != "global") {
+                    $('.article-link-popup').hide();
+                }
+            });
+
+            polyline.on('mouseover', function() {
+                this.setStyle(style_track_hover); 
+            });
+            polyline.on('mouseout', function() {
+                this.setStyle(style_track); 
+            });
+            lg_tracks.addLayer(polyline.addTo(map));
+
+        }
+        if (tracks.length > 0) {
+            lcontrollayers.addOverlay(lg_tracks.addTo(map), "GPX");
+            bounds.extend(lg_tracks.getBounds());
+            map.fitBounds(bounds);
+        }
+
+        (new L.Control.ResetView(locateBounds)).addTo(map);
+
+        var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
+        var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'); 
+        
+        lcontrollayers.addBaseLayer(outdoor,"Outdoor");
+        lcontrollayers.addBaseLayer(classic.addTo(map),"Classic");
+        lcontrollayers.addTo(map);
+    }
+</script>

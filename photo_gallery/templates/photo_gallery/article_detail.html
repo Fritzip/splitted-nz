@@ -126,13 +126,13 @@
 
         </div>
     {% else %}
-        <h3>This article is temporarily unavailable.</h3>
+        <h3>This page is temporarily unavailable.</h3>
     {% endif %}
 
 {% endblock %}
 
 {% block js %}
-    {% include "geoloc_data/mapjs.html" with slug=article.slug %}
+    {% include "geodata/mapjs.html" with tracks=stravactivities %}
     <script>
         // build the json article images collection 
         window.djangoAlbumImages = [

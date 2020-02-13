@@ -70,43 +70,39 @@ def submission_delete(sender, instance, **kwargs):
 def submission_delete(sender, instance, **kwargs):
     instance.thumb.delete(False) 
 
-class Post(models.Model):
-    text = models.TextField(max_length=1024)
+# from djgeojson.fields import PointField
 
-
-from djgeojson.fields import PointField
-
-class SleepSpot(models.Model):
-    album = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True)
-    title = models.CharField(max_length=256)
+# class SleepSpot(models.Model):
+#     album = models.ForeignKey(Article, on_delete=models.SET_NULL, blank=True, null=True)
+#     title = models.CharField(max_length=256)
     
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
+#     start_date = models.DateField(null=True, blank=True)
+#     end_date = models.DateField(null=True, blank=True)
 
-    geom = PointField(null=True, blank=True, default={})
+#     geom = PointField(null=True, blank=True, default={})
 
-    @property
-    def popupContent(self):
-        popup = '<b>{}</b><br>{}'.format(self.title, event_date(self.start_date, self.end_date))
-        if self.album:
-            article_link = 'Article : <a href="{}">{}</a>'.format(reverse('photo_gallery:article', args=(self.album.slug,)), self.album.title)
-        else:
-            article_link = 'Pas d\'article en rapport'
+#     @property
+#     def popupContent(self):
+#         popup = '<b>{}</b><br>{}'.format(self.title, event_date(self.start_date, self.end_date))
+#         if self.album:
+#             article_link = 'Article : <a href="{}">{}</a>'.format(reverse('photo_gallery:article', args=(self.album.slug,)), self.album.title)
+#         else:
+#             article_link = 'Pas d\'article en rapport'
         
-        popup += '<br><span class=article-link-popup>{}</span>'.format(article_link)
+#         popup += '<br><span class=article-link-popup>{}</span>'.format(article_link)
 
-        popup += '<span class="btn-floating btn-small waves-effect waves-light zoom-in-popup"><i class="fas fa-compress-arrows-alt"></i></span>'
+#         popup += '<span class="btn-floating btn-small waves-effect waves-light zoom-in-popup"><i class="fas fa-compress-arrows-alt"></i></span>'
 
-        return popup
+#         return popup
 
-    def __str__(self):
-        return self.title
+#     def __str__(self):
+#         return self.title
 
-    def save(self, *args, **kwargs):
-        if self.album and not self.start_date:
-            self.start_date = self.album.start_date
-            self.end_date = self.album.end_date
-        super(SleepSpot, self).save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         if self.album and not self.start_date:
+#             self.start_date = self.album.start_date
+#             self.end_date = self.album.end_date
+#         super(SleepSpot, self).save(*args, **kwargs)
 
 
     
