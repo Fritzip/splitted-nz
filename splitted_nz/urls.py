@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import path
 from django.contrib.auth import views
 from django.views.generic.base import RedirectView
 
@@ -8,11 +9,12 @@ from django.conf.urls.static import static
 from django.conf.urls import include
 from django.contrib import admin
 
+
 admin.autodiscover()
 
 urlpatterns = [
     url(r'^', include('photo_gallery.urls')),
-    url(r'^', include('geoloc_data.urls')),
+    url(r'^', include('geodata.urls')),
 
     # Favicon
     url(r'^favicon\.ico$', RedirectView.as_view(url='/static/icons/favicon.ico', permanent=True)),

@@ -13,7 +13,7 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 
-from .models import Article, ArticleImage, SleepSpot
+from .models import Article, ArticleImage
 from .forms import ArticleForm
 
 from import_export import resources

@@ -6,7 +6,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 
 from photo_gallery.models import Article, ArticleImage
-from geoloc_data.models import DatedSpot, GPXTrack
+from geodata.models import StravActivity, SleepSpot
+
+import json
 
 def gallery(request):
     articles_list = Article.objects.filter(is_visible=True).order_by('-created')
@@ -39,6 +41,11 @@ class ArticleDetail(DetailView):
         # Add in a QuerySet of all the images
         context['images'] = ArticleImage.objects.filter(album=self.object.id).order_by('alt')
 
+        #json.dumps(list(
+        context['stravactivities'] = list(StravActivity.objects.filter(article=self.object.id))
+
+        context['sleepspots'] = SleepSpot.objects.filter(article=self.object.id).order_by('-start_date')
+
         try:
             next_article = self.object.get_next_by_start_date().slug
         except Article.DoesNotExist:
@@ -57,3 +64,6 @@ class ArticleDetail(DetailView):
 def handler404(request, exception):
     assert isinstance(request, HttpRequest)
     return render(request, 'photo_gallery/handler404.html', None, None, 404)
+
+def unavailable(request):
+    return render(request, 'photo_gallery/article_detail.html')
