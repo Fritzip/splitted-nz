@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block js %}
-{% include "geoloc_data/mapjs.html" with slug="global" %}
+{% include "geodata/mapjs.html" with tracks=tracks slug="global" %}
 <script>
     $(document).ready(function(){
         $(".page-title").addClass("tooltipped").attr('data-position', 'bottom').attr('data-tooltip', '<i class="fab fa-2x fa-youtube"></i>').tooltip();

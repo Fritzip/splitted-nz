@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import DetailView
 
 from photo_gallery.models import Article, ArticleImage
-from geodata.models import DatedSpot, GPXTrack, StravActivity
+from geodata.models import StravActivity, SleepSpot
 
 import json
 
@@ -41,7 +41,10 @@ class ArticleDetail(DetailView):
         # Add in a QuerySet of all the images
         context['images'] = ArticleImage.objects.filter(album=self.object.id).order_by('alt')
 
-        context['stravactivities'] = json.dumps(list(StravActivity.objects.values_list('polyline', flat=True)))
+        #json.dumps(list(
+        context['stravactivities'] = list(StravActivity.objects.filter(article=self.object.id))
+
+        context['sleepspots'] = SleepSpot.objects.filter(article=self.object.id).order_by('-start_date')
 
         try:
             next_article = self.object.get_next_by_start_date().slug
