@@ -132,7 +132,7 @@
 {% endblock %}
 
 {% block js %}
-    {% include "geodata/mapjs.html" with slug=article.slug %}
+    {% include "geodata/mapjs.html" with tracks=stravactivities %}
     <script>
         // build the json article images collection 
         window.djangoAlbumImages = [
