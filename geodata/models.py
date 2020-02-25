@@ -68,7 +68,7 @@ class SleepSpot(models.Model):
     def save(self, *args, **kwargs):
         if self.article and not self.start_date:
             self.start_date = self.article.start_date
-        super(DatedSpot, self).save(*args, **kwargs)
+        super(SleepSpot, self).save(*args, **kwargs)
 
 class DatedSpot(models.Model):
     pass
