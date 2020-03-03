@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
+import os, shutil
 import re
 import uuid
 import zipfile
@@ -47,7 +47,7 @@ class ArticleAdmin(ImportExportModelAdmin):
             filepath_dest = '{}{}'.format(splitted_nz.settings.MEDIA_ROOT, new_thumb_name)
 
             album.thumb = new_thumb_name
-            os.rename(filepath_src, filepath_dest)
+            shutil.move(filepath_src, filepath_dest)
             album.save()
 
             if form.cleaned_data['zip'] != None:
