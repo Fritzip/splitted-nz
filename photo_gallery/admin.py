@@ -10,6 +10,7 @@ from zipfile import ZipFile
 
 from django.contrib import admin
 from django.core.files.base import ContentFile
+from django.urls import reverse
 
 from PIL import Image
 
@@ -26,6 +27,21 @@ class ArticleResource(resources.ModelResource):
         model = Article
 
 class ArticleAdmin(ImportExportModelAdmin):
+
+    def pictures(self, obj):
+        pics = ArticleImage.objects.filter(album=obj.id)
+        out = ""
+        for pic in pics:
+            out += '<a href="{}"><img src="{}" width=350/></a>'.format(
+                reverse("admin:photo_gallery_articleimage_change", args=[pic.id]),
+                pic.image.url)
+
+        return format_html(out)
+
+    pictures.short_description = 'Pictures'
+
+    readonly_fields = ('pictures',)
+
     form = ArticleForm
     prepopulated_fields = {'slug': ('title',)}
     list_display = ('title', 'start_date','is_visible',)
@@ -92,8 +108,16 @@ class ArticleImageResource(resources.ModelResource):
     class Meta:
         model = ArticleImage
 
+from django.utils.html import format_html
+
 class ArticleImageAdmin(ImportExportModelAdmin):
-    list_display = ('alt', 'album')
+    def image_tag(self, obj):
+        return format_html('<img src="{}" width=350/>'.format(obj.image.url))
+
+    image_tag.short_description = 'Image'
+
+    readonly_fields = ('image_tag',)
+    list_display = ('id', 'alt', 'album')
     list_filter = ('album', 'created')
     resource_class = ArticleImageResource
 
