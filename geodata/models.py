@@ -19,7 +19,7 @@ def popupheader(title, icon, date, time=None):
     if time:
         htmltime = '<i class="fas fa-clock"></i>{}'.format(time)
     return '''<div class="grid-popup-row">
-                        <b style="font-size:14px;">{1}</b>
+                        <b style="font-size:14px;margin-left:5px">{1}</b>
                    </div>
                    <div class="grid-popup-row" style="justify-content: flex-start;">
                         <i class="fas fa-calendar-alt"></i>
@@ -151,7 +151,7 @@ class StravActivity(models.Model):
         if self.article:
             popup += popuparticlebtn(self.article.letters,self.article.slug,self.article.title) 
             
-        popup += popupcenteronfeature()
+        # popup += popupcenteronfeature()
 
         popup += '<span class="top-left btn-floating btn-small red" style="cursor: default;"><i class="fas {}"></i></span>'.format(self.get_activity_icon())
 

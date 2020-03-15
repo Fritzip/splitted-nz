@@ -204,8 +204,8 @@ nav #sidenav-toggle {
 
 .top-left {
   position: absolute;
-  top: -12px;
-  left: -12px;
+  top: 0; /*-12px;*/
+  left: -20px;
   margin: 0;
 }
 
@@ -334,4 +334,13 @@ a.btn {
 
 .no-hover {
   pointer-events: none;
+}
+
+.info {
+  padding: 6px 8px;
+  /*font: 14px/16px Arial, Helvetica, sans-serif;*/
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
 }

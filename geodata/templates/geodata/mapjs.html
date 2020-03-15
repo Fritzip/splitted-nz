@@ -6,7 +6,6 @@
 <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 <link rel="stylesheet" href="{% static 'external/leaflet-extra-markers/css/leaflet.extra-markers.min.css' %}">
 <link rel="stylesheet" href="{% static 'site.css' %}" type="text/css" />
-
 {% leaflet_js %}
 <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js' defer></script>
 <script src="{% static 'external/Polyline.encoded.js' %}"></script>
@@ -14,6 +13,8 @@
 
 
 <script type="text/javascript">
+    var map;
+
     var sleepdspotsdata = {{ sleepspots|geojsonfeature:"popupContent"|safe }};
 
     var lineCoordinate = [];
@@ -26,7 +27,68 @@
 
     var bounds = L.latLngBounds();
 
+    var style_track = {
+                color: 'blue',
+                weight: 2,
+                opacity: .7,
+                lineJoin: 'round'
+            };
+    var style_track_hover = {
+                color: 'blue',
+                weight: 4,
+                opacity: .7,
+                lineJoin: 'round'
+            };
+
+    var lg_tracks = new L.geoJSON(null, {style:style_track, onEachFeature:onEachFeature});
+
+    var info = L.control({position: 'bottomright'});
+
+    info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+    };
+
+    // method that we will use to update the control based on feature properties passed
+    info.update = function (props) {
+        this._div.innerHTML = (props ? props.popup : 'Infobox');
+        // $(this._div).animate({'opacity': 0}, 400, function(){
+        //     $(this).html(props ? props.popup : 'Infobox').animate({'opacity': 1}, 400);
+        // });
+    };
+
+
     function locateBounds () { return bounds; }
+
+    function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle(style_track_hover);
+        info.update(layer.feature.properties);
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+    }
+
+    function resetHighlight(e) {
+        lg_tracks.resetStyle(e.target);
+        // info.update();
+    }
+
+    function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+        info.update(e.target.feature.properties);
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+    }
 
     function onEachSleepSpotFeature(map, id) {
         return function onEachFeature(feature, layer) {
@@ -63,7 +125,14 @@
         }
     }
 
-    function map_init(map, options) {  
+    function removeElements(text, selector) {
+        var wrapped = $("<div>" + text + "</div>");
+        wrapped.find(selector).remove();
+        return wrapped.html();
+    }
+
+    function map_init(mapi, options) {
+        map = mapi ;
         map.addControl(new L.Control.Fullscreen());
 
         var lcontrollayers = L.control.layers(null, null);
@@ -78,7 +147,7 @@
                 bounds = map.getBounds();
             } else {
                 var path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
-                bounds.extend(sleepspots_overlay.getBounds().pad(0.5));      // Extend LatLngBounds with coordinates
+                bounds.extend(sleepspots_overlay.getBounds());//.pad(0.5));      // Extend LatLngBounds with coordinates
                 lcontrollayers.addOverlay( path_overlay, "Path" );
             }
             map.fitBounds(bounds);
@@ -89,19 +158,6 @@
 
         ///////// GPXTracks
         // var tracks = {{ tracks | safe }};
-        var lg_tracks = new L.FeatureGroup();
-        var style_track = {
-                    color: 'blue',
-                    weight: 2,
-                    opacity: .7,
-                    lineJoin: 'round'
-                };
-        var style_track_hover = {
-                    color: 'blue',
-                    weight: 4,
-                    opacity: .7,
-                    lineJoin: 'round'
-                };
         var tracks = [
             {% for item in tracks %}
                 {
@@ -116,23 +172,30 @@
             var polyline = L.polyline(
                 coordinates,
                 style_track
-            );
-            polyline.bindPopup(track['popup']).on("click", ev => {
-                $(".zoom-in-popup").on("click", e => {
-                    map.fitBounds(ev.target.getBounds());
-                });
-                if($(".leaflet-container-default").attr('id') != "global") {
-                    $('.article-link-popup').hide();
-                }
-            });
+            ).toGeoJSON();
 
-            polyline.on('mouseover', function() {
-                this.setStyle(style_track_hover); 
-            });
-            polyline.on('mouseout', function() {
-                this.setStyle(style_track); 
-            });
-            lg_tracks.addLayer(polyline.addTo(map));
+            if($(".leaflet-container-default").attr('id') != "global") {
+                track['popup'] = removeElements(track['popup'],'.article-link-popup');
+            }
+            L.extend(polyline.properties, {name:track['name'], popup:track['popup']});
+            // polyline.bindPopup(track['popup']).on("click", ev => {
+            //     $(".zoom-in-popup").on("click", e => {
+            //         map.fitBounds(ev.target.getBounds());
+            //     });
+                // if($(".leaflet-container-default").attr('id') != "global") {
+                //     $('.article-link-popup').hide();
+                // }
+            // });
+
+            // polyline.on('mouseover', function(e) {
+            //     this.setStyle(style_track_hover); 
+            //     console.log(e.target);
+            //     // info.update(layer.feature.properties);
+            // });
+            // polyline.on('mouseout', function() {
+            //     this.setStyle(style_track); 
+            // });
+            lg_tracks.addData(polyline);
 
         }
         if (tracks.length > 0) {
@@ -142,6 +205,9 @@
         }
 
         (new L.Control.ResetView(locateBounds)).addTo(map);
+        map.on('click', function(e) {
+            info.update();
+        });
 
         var outdoor = L.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=868563c2a5a94440bbad18257a5d9bc1');
         var classic = L.tileLayer(' https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'); 
@@ -149,5 +215,6 @@
         lcontrollayers.addBaseLayer(outdoor,"Outdoor");
         lcontrollayers.addBaseLayer(classic.addTo(map),"Classic");
         lcontrollayers.addTo(map);
+        info.addTo(map);
     }
 </script>
