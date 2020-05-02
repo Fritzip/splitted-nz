@@ -62,6 +62,17 @@ class SleepSpot(models.Model):
     def end_date(self):
         return self.start_date + timedelta(days=self.duration)    
 
+    @property
+    def timestamp(self):
+        return datetime.timestamp(
+            datetime(
+                year=self.start_date.year, 
+                month=self.start_date.month,
+                day=self.start_date.day,
+            )
+        )
+
+
     def __str__(self):
         return self.name
 
@@ -100,6 +111,9 @@ class StravActivity(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def timestamp(self):
+        return datetime.timestamp(self.start_date_local)
 
     def get_formated_stat(self, field, unit):
         if field:

@@ -50,9 +50,9 @@ nav {
   background-color: #414654;
 }
 
-nav #sidenav-toggle {
+#sidenav-toggle {
   margin:0;
-  z-index: 1006;
+  z-index: 1008; !important
 }
 
 .nav-icons-left {
@@ -111,13 +111,13 @@ nav #sidenav-toggle {
 }
 
 .sidenav {
-  z-index: 1001;
+  z-index: 1005;
   background-color: rgb(245, 245, 245);
   height: 100%;
 }
 
 .sidenav-overlay {
-  z-index: 1000; !important
+  z-index: 1004; !important
 }
 
 .sidenav .user-view {

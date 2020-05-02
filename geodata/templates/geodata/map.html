@@ -8,14 +8,131 @@
 {% block title-link %}https://youtu.be/jyq-0TbBiWg?t=50{% endblock title-link %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.css" integrity="sha256-IQnSeew8zCA+RvM5fNRro/UY0Aib18qU2WBwGOHZOP0=" crossorigin="anonymous" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.min.js" integrity="sha256-1ubcV7PzqcMhAz7jsoU3QlAfCnUaY7SUffeHa4Nq3ws=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js" integrity="sha256-DkHIFUKQfqQ7jA6GnWR9ZyB4Jb+j+dOuY12vnYq8xjk=" crossorigin="anonymous"></script>
+
+<style>
+    .slider-tooltip-container {
+        position: absolute;
+        z-index: 1002;
+        margin: auto;
+        width: 100%;
+        display:flex;
+        flex-direction: row;
+    }
+    .slider-tooltip {
+        margin: auto;
+        background-color: rgba(0,0,0,0.5);
+        color: #F2F2F2;
+        border-radius: 0 0 8px 8px;
+        padding: 0px 6px;
+    }
+    .noUi-horizontal .noUi-handle {
+        /*height: 12px;*/
+        /*left: 75px !important;*/
+        /*top:-4px !important;*/
+        outline: none;
+        /*width:20px;*/
+    }
+    .noUi-target {
+        border: none;
+    }
+    .noUi-handle:after, .noUi-handle:before {
+        content: unset;
+    }
+</style>
+<!-- <style> 
+.noUi-tooltip {
+    display: none;
+}
+.noUi-active .noUi-tooltip {
+    display: block;
+}
+</style> -->
+<div id="slider" style="z-index: 1003; width:100%; height: 8px"></div>
+<div class="slider-tooltip-container">
+    <div class="slider-tooltip">
+        <span id="input-number-min"></span>
+        <span>-</span>
+        <span id="input-number-max"></span>
+    </div>
+</div>
 {% leaflet_map "global" callback="window.map_init" %}
 {% endblock %}
 
 {% block js %}
+
 {% include "geodata/mapjs.html" with tracks=tracks slug="global" %}
 <script>
-    $(document).ready(function(){
+
+    window.onload = function(event){
         $(".page-title").addClass("tooltipped").attr('data-position', 'bottom').attr('data-tooltip', '<i class="fab fa-2x fa-youtube"></i>').tooltip();
-    });
+
+        var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" ];
+        // Create a new date from a string, return as a timestamp.
+
+        function timestamp(str) {
+            return new Date(str).getTime();
+        }
+
+        function toFormat ( v ) {
+            return formatDate(new Date(v));
+        }
+
+        function formatDate(date) {
+            return months[date.getMonth()] + " " +
+                date.getFullYear(); 
+       }
+
+        var date_range = {{date_range | safe}} ;
+
+        var slider = document.getElementById('slider');
+        noUiSlider.create(slider, {
+                behaviour: 'tap',
+                connect: true,
+                // tooltips: [ true, true ],
+                // format: { to: toFormat, from: Number },
+                start: [ timestamp(date_range[0]), timestamp(date_range[1]) ],
+                range: {
+                    min: timestamp(date_range[0]),
+                    max: timestamp(date_range[1])
+                },
+                step: 1 * 24 * 60 * 60 * 1000,
+        });
+
+        var dateValues = [
+            document.getElementById('input-number-min'),
+            document.getElementById('input-number-max')
+        ];
+
+        var rangeMin, rangeMax;
+
+        slider.noUiSlider.on('update', function (values, handle) {
+            dateValues[handle].innerHTML = formatDate(new Date(+values[handle]));
+            var before = 0, after = 0;
+
+            $(".leaflet-marker-icon i").each(function(){
+                var date = $(this).data("date");
+                if(date < values[0]) {
+                    after += 1;
+                    $(this).parent().hide();
+                } else if ( date > values[1]) {
+                    before += 1;                    
+                    $(this).parent().hide();
+                } else {
+                    $(this).parent().show();
+                }
+            });
+            
+            lcontrollayers.removeLayer(path_overlay);
+            map.removeLayer(path_overlay);
+            path_overlay = new L.Polyline(lineCoordinate.slice(before,lineCoordinate.length - after), {color: 'red'}).addTo(map);
+            lcontrollayers.addOverlay( path_overlay, "Path" );
+
+        });
+    };
+          
 </script>
+
 {% endblock %}

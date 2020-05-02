@@ -33,7 +33,8 @@
             svgOpacity: 1,
             iconColor: "#fff",
             number: "",
-            svg: false
+            svg: false,
+            extraAttr: ""
         },
         initialize: function(options) {
             options = L.Util.setOptions(this, options);
@@ -77,7 +78,7 @@
                 }
                 return svg + "<i " + iconNumber + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + options.icon + "'></i>";
             }
-            return "<i " + iconNumber + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + options.icon + "'></i>";
+            return "<i " + options.extraAttr + " " + iconNumber + iconColorStyle + "class='" + options.extraClasses + " " + options.prefix + " " + options.icon + "'></i>";
         },
         _setIconStyles: function(img, name) {
             var options = this.options, size = L.point(options[name === "shadow" ? "shadowSize" : "iconSize"]), anchor, leafletName;
@@ -100,6 +101,7 @@
                 img.style.width = size.x + "px";
                 img.style.height = size.y + "px";
             }
+
         },
         createShadow: function() {
             var div = document.createElement("div");

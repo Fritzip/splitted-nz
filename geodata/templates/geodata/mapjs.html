@@ -15,15 +15,13 @@
 <script type="text/javascript">
     var map;
 
-    var sleepdspotsdata = {{ sleepspots|geojsonfeature:"popupContent"|safe }};
+    var sleepdspotsdata = {{ sleepspots|geojsonfeature:"popupContent,start_date,end_date"|safe }};
+    var sleepspots_overlay ;
 
     var lineCoordinate = [];
-
-    var simpleicon = L.ExtraMarkers.icon({
-        icon: 'fa-circle',
-        prefix: 'fas',
-        markerColor: 'blue-dark',
-    });
+    var path_overlay;
+    var lcontrollayers;
+    // export { map, lineCoordinate, path_overlay, lcontrollayers };
 
     var bounds = L.latLngBounds();
 
@@ -42,7 +40,24 @@
 
     var lg_tracks = new L.geoJSON(null, {style:style_track, onEachFeature:onEachFeature});
 
+    var tracks = [
+            {% for item in tracks %}
+                {
+                    name: '{{ item.name }}',
+                    timestamp: '{{ item.timestamp }}',
+                    polyline: '{{ item.polyline|escapejs }}',
+                    popup: '{{ item.popupContent|escapejs }}',
+                },
+            {% endfor %}
+        ];
+
     var info = L.control({position: 'bottomright'});
+
+    var selected_track = null;
+
+    var isMobile = window.matchMedia("only screen and (max-width: 760px)").matches;
+
+
 
     info.onAdd = function (map) {
         this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
@@ -56,14 +71,22 @@
         // $(this._div).animate({'opacity': 0}, 400, function(){
         //     $(this).html(props ? props.popup : 'Infobox').animate({'opacity': 1}, 400);
         // });
+        // $(this._div).fadeOut(200, function()
+        // {     
+            // $(this).html(props ? props.popup : 'Infobox').fadeIn(200);
+        // });
     };
-
 
     function locateBounds () { return bounds; }
 
     function highlightFeature(e) {
+        if(isMobile && selected_track) {
+            resetHighlight(selected_track);
+            selected_track = e;
+        }
+        L.DomEvent.stopPropagation(e);
         var layer = e.target;
-
+        selected_track = e;
         layer.setStyle(style_track_hover);
         info.update(layer.feature.properties);
 
@@ -74,20 +97,29 @@
 
     function resetHighlight(e) {
         lg_tracks.resetStyle(e.target);
+        selected_track = null;
         // info.update();
     }
 
     function zoomToFeature(e) {
+        L.DomEvent.stopPropagation(e);
         map.fitBounds(e.target.getBounds());
         info.update(e.target.feature.properties);
     }
 
     function onEachFeature(feature, layer) {
         layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: zoomToFeature
+            ...(!isMobile && {mouseover: highlightFeature}),
+            ...(!isMobile && {mouseout: resetHighlight}),
+            ...(!isMobile && {click: zoomToFeature}),
+            ...(isMobile && {click: highlightFeature}),
+            ...(isMobile && {dblclick: zoomToFeature}),
         });
+    }
+
+    // Create a new date from a string, return as a timestamp.
+    function timestamp(str) {
+        return new Date(str).getTime();
     }
 
     function onEachSleepSpotFeature(map, id) {
@@ -101,6 +133,13 @@
                         $('.article-link-popup').hide();
                     }
                 });
+                var simpleicon = L.ExtraMarkers.icon({
+                            icon: 'fa-circle',
+                            prefix: 'fas',
+                            markerColor: 'blue-dark',
+                            shadowSize: [0,0],
+                            extraAttr: 'data-date='+timestamp(feature.properties.start_date)
+                        });
                 if(id != "global") {
                     layer.setIcon(simpleicon);
                 } else {
@@ -112,7 +151,9 @@
                             number: $(popupjq).data("letters"),
                             prefix: 'fas',
                             markerColor: 'green-light',
-                            extraClasses: 'custom-marker'
+                            extraClasses: 'custom-marker',
+                            shadowSize: [0,0],
+                            extraAttr: 'data-date='+timestamp(feature.properties.start_date)
                         });
                         layer.setIcon(articleicon);
                     } else {
@@ -132,13 +173,18 @@
     }
 
     function map_init(mapi, options) {
+        // $(".leaflet-shadow-pane").hide();
         map = mapi ;
         map.addControl(new L.Control.Fullscreen());
 
-        var lcontrollayers = L.control.layers(null, null);
-
+        lcontrollayers = L.control.layers(null, null);
         ///////// Sleepspots
-        var sleepspots_overlay = L.geoJson(sleepdspotsdata, {onEachFeature: onEachSleepSpotFeature(map, $(".leaflet-container-default").attr('id'))}).addTo(map);
+        sleepspots_overlay = L.geoJson(sleepdspotsdata, {
+            onEachFeature: onEachSleepSpotFeature(map, $(".leaflet-container-default").attr('id'))
+            // filter: function (feature, layer) {
+            //     return timestamp(feature.properties.start_date) >= rangeMin ;
+            // }
+        }).addTo(map);
         if (sleepdspotsdata.features.length > 0) {
             lcontrollayers.addOverlay( sleepspots_overlay, "SleepSpots" );
             if (sleepdspotsdata.features.length == 1) {
@@ -146,27 +192,20 @@
 
                 bounds = map.getBounds();
             } else {
-                var path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
+                path_overlay = L.polyline(lineCoordinate, {color: 'red'}).addTo(map);
                 bounds.extend(sleepspots_overlay.getBounds());//.pad(0.5));      // Extend LatLngBounds with coordinates
                 lcontrollayers.addOverlay( path_overlay, "Path" );
             }
             map.fitBounds(bounds);
         } else {
             // no sleepspot associatied with this view
+            // TODO add if id != global for displaying the map even if no sleepspots are found and check for absence of track to before hiding
             $(".leaflet-container-default").hide();
         }
 
         ///////// GPXTracks
         // var tracks = {{ tracks | safe }};
-        var tracks = [
-            {% for item in tracks %}
-                {
-                    name: '{{ item.name }}',
-                    polyline: '{{ item.polyline|escapejs }}',
-                    popup: '{{ item.popupContent|escapejs }}',
-                },
-            {% endfor %}
-        ];
+        
         for (let track of tracks ) {
             var coordinates = L.Polyline.fromEncoded(track['polyline']).getLatLngs();
             var polyline = L.polyline(
@@ -196,6 +235,7 @@
             //     this.setStyle(style_track); 
             // });
             lg_tracks.addData(polyline);
+            // console.log(track['timestamp']);
 
         }
         if (tracks.length > 0) {
@@ -206,6 +246,9 @@
 
         (new L.Control.ResetView(locateBounds)).addTo(map);
         map.on('click', function(e) {
+            if(selected_track) {
+                resetHighlight(selected_track);
+            }
             info.update();
         });
 
@@ -217,4 +260,5 @@
         lcontrollayers.addTo(map);
         info.addTo(map);
     }
+
 </script>
