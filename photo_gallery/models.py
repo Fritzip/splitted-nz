@@ -21,7 +21,11 @@ def event_date(start, end):
 class Article(models.Model):
     title = models.CharField(max_length=70)
     description = models.TextField(max_length=8192, null=True, blank=True)
-    thumb = models.ImageField()
+    image = models.ImageField()
+    thumb = ImageSpecField(source='image',
+                              processors=[ResizeToFit(100)],
+                              format='JPEG',
+                              options={'quality': 5})
     is_visible = models.BooleanField(default=True)
     start_date = models.DateField(default=datetime.today)
     end_date = models.DateField(null=True, blank=True)
@@ -29,6 +33,7 @@ class Article(models.Model):
     modified = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=50, unique=True)
 
+    @property    
     def get_event_date(self):
         return event_date(self.start_date, self.end_date)
 
@@ -50,9 +55,9 @@ class ArticleImage(models.Model):
     # image = ProcessedImageField(upload_to='albums', processors=[ResizeToFit(1280)], format='JPEG', options={'quality': 70})
     image = models.ImageField()
     thumb = ImageSpecField(source='image',
-                                      processors=[ResizeToFit(300)],
+                                      processors=[ResizeToFit(100)],
                                       format='JPEG',
-                                      options={'quality': 10}) # CACHE folder in media/
+                                      options={'quality': 5}) # CACHE folder in media/
 
     album = models.ForeignKey(Article, on_delete=models.CASCADE)
     alt = models.CharField(max_length=255, default=uuid.uuid4)

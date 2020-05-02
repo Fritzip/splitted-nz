@@ -42,7 +42,7 @@
                         <div class="col center-align s12 m5 l4 push-m1 card-container" id="{{forloop.counter0}}">
                         <div class="card dpg-album-card">
                         <a  href="javascript:pswpInit({{ forloop.counter0 }});"}>
-                            <div class="card-image">
+                            <div class="card-image z-depth-2">
                                 <img src="{{item.thumb.url}}" data-src="{{item.image.url}}" alt="{{ item.alt }}" class="asyncImage dpg-album-card-image" />
                             </div>
                         </a>
@@ -171,11 +171,6 @@
     </script> -->
 
     <script>
-        $('.asyncImage').each(function(i,obj){
-            $(this).attr('src', $(this).data('src'));
-        })
-    </script>
-    <script>
         function insertImgCard(dest, srccln) {
             $(srccln).insertAfter($(dest)).wrap( "<div class='row center-align'></div>" );
             // $(dest).parent().css({'display':'inline-block', 'margin':0, 'padding':0});
@@ -209,9 +204,14 @@
         $('static-img').each(function(i,obj){
             var caption = $(this).attr('caption');
             var that = $(".card-container").first().clone();
+            $(that).find('img').removeClass('asyncImage');
             insertImgCard($(this), $(that));
             $(".dpg-album-card-image", that).attr('src', $(this).attr('src'));
             addCaption($(that), caption);
         })
+
+        //$('.pswp__img').each(function() {
+        //    $(this).addClass('asyncImage');
+        //});            
     </script>
 {% endblock %}

@@ -5,14 +5,14 @@
 
 <div class="container">
     <div class="row">
-        {% for article in article_list_cp %}
+        {% for article in articles %}
         <div class="col s12 m5 l4 push-m1">
             <div class="card hoverable dpg-album-card">
-                <a  href="{% url 'photo_gallery:article' article.1 %}"}>
-                <div class="card-image">
-                    <img src="{{ article.3.url }}" alt="{{ article.0 }}" class="dpg-album-card-image" />
-                    <span class="white-text shadowed-black-text" style="position: absolute; margin: 20px; top:0%; right: 0%">{{ article.2 }}</span>
-                    <span class="card-title shadowed-black-text">{{ article.0 }}</span>
+                <a  href="{% url 'photo_gallery:article' article.slug %}"}>
+                <div class="card-image z-depth-3">
+                    <img src="{{article.thumb.url}}" data-src="{{article.image.url}}" alt="{{ article.slug }}" class="asyncImage dpg-album-card-image" />
+                    <span class="white-text shadowed-black-text" style="position: absolute; margin: 20px; top:0%; right: 0%">{{ article.get_event_date }}</span>
+                    <span class="card-title shadowed-black-text">{{ article.title }}</span>
                 </div>
                 </a>
             </div>
@@ -23,16 +23,16 @@
     </div>
 </div>
 
-<div class="pagination center">
+<!--div class="pagination center">
     <span class="step-links">
-        {% if articles.has_previous %}
-        <a href="?page={{ articles.previous_page_number }}" class="waves-effect waves-light btn btn-large">Previous</a>
+        {% if articles_list.has_previous %}
+        <a href="?page={{ articles_list.previous_page_number }}" class="waves-effect waves-light btn btn-large">Previous</a>
         {% endif %}
 
-        {% if articles.has_next %}
-        <a href="?page={{ articles.next_page_number }}" class="waves-effect waves-light btn btn-large">Next</a>
+        {% if articles_list.has_next %}
+        <a href="?page={{ articles_list.next_page_number }}" class="waves-effect waves-light btn btn-large">Next</a>
         {% endif %}
     </span>
-</div>
+</div> -->
 
 {% endblock %}

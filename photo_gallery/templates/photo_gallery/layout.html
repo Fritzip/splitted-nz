@@ -16,38 +16,36 @@
 
 <body>
     <div class="flex-container-col">
-        <div style="z-index: 1007">
-            <nav class="nav-extended" role="navigation">
-                <div class="flex-container-row nav-wrapper" id="nav-top">
-                    <div class="flex-container-row nav-icons-left">
-                        <a href="#" data-target="slide-out" class="show-on-large shadowed-black-text" id="sidenav-toggle"><i class="nav-icon fas fa-bars"></i></a>
-                        <a href="{% url 'photo_gallery:gallery' %}" class="tooltipped" id="home-icon" data-position="bottom" data-tooltip="Home"><i class="nav-icon fas fa-kiwi-bird"></i></a>
-                    </div>
-                    <a class="page-title" href="{% block title-link %}{% url 'photo_gallery:gallery' %}{% endblock title-link %}">{% block page-title %}Splitted NZ{% endblock page-title %}</a>
-                    <div class="flex-container-row nav-icons-right">
-                        <a class="tooltipped" data-position="bottom" data-tooltip="Map" href="{% url 'geodata:map' %}"><i class="nav-icon fas fa-map-marked-alt"></i></a> 
-                        <a href="{% url 'admin:index' %}"><i class="nav-icon fas fa-user-lock"></i></a>
-                    </div>
+        <nav class="nav-extended" role="navigation">
+            <div class="flex-container-row nav-wrapper" id="nav-top">
+                <div class="flex-container-row nav-icons-left">
+                    <a href="#" data-target="slide-out" class="show-on-large shadowed-black-text" id="sidenav-toggle"><i class="nav-icon fas fa-bars"></i></a>
+                    <a href="{% url 'photo_gallery:gallery' %}" class="tooltipped" id="home-icon" data-position="bottom" data-tooltip="Home"><i class="nav-icon fas fa-kiwi-bird"></i></a>
                 </div>
-                <div class="flex-container-row nav-wrapper" id="nav-bottom"></div>
-            </nav>
-            <ul id="slide-out" class="sidenav">
-              <li><div class="user-view">
-                <div class="background">
-                  <img class="responsive-img" src="{% static 'images/bg.jpg' %}">
+                <a class="page-title" href="{% block title-link %}{% url 'photo_gallery:gallery' %}{% endblock title-link %}">{% block page-title %}Splitted NZ{% endblock page-title %}</a>
+                <div class="flex-container-row nav-icons-right">
+                    <a class="tooltipped" data-position="bottom" data-tooltip="Map" href="{% url 'geodata:map' %}"><i class="nav-icon fas fa-map-marked-alt"></i></a> 
+                    <a href="{% url 'admin:index' %}"><i class="nav-icon fas fa-user-lock"></i></a>
                 </div>
-                <p><img class="circle left" src="{% static 'images/face.jpg' %}"></p></br>
-                <span class="white-text shadowed-black-text name">Maxime Sainlot</span>
-                <span class="white-text shadowed-black-text email">maxime.sainlot@gmail.com</span>
-              </div></li>
-              {% for article in article_list_cp %}
-                <li><a class="waves-effect" href="{% url 'photo_gallery:article' article.1 %}">
-                    <img class="responsive-img circle" src="{{ article.3.url }}">
-                    <span>{{ article.0 }}</span><span class=sidenav-li-date>{{ article.2 }}</span>
-                </a></li>
-              {% endfor %}
-            </ul>
-        </div>
+            </div>
+            <div class="flex-container-row nav-wrapper" id="nav-bottom"></div>
+        </nav>
+        <ul id="slide-out" class="sidenav">
+          <li><div class="user-view">
+            <div class="background">
+              <img class="responsive-img" src="{% static 'images/bg.jpg' %}">
+            </div>
+            <p><img class="circle left" src="{% static 'images/face.jpg' %}"></p></br>
+            <span class="white-text shadowed-black-text name">Maxime Sainlot</span>
+            <span class="white-text shadowed-black-text email">maxime.sainlot@gmail.com</span>
+          </div></li>
+          {% for article in article_list_cp %}
+            <li><a class="waves-effect" href="{% url 'photo_gallery:article' article.1 %}">
+                <img src="{{article.3.url}}" alt="{{ article.1 }}" class="noblur dpg-album-card-image responsive-img circle" />
+                <span>{{ article.0 }}</span><span class=sidenav-li-date>{{ article.2 }}</span>
+            </a></li>
+          {% endfor %}
+        </ul>
         <div style="flex:1 1 auto">
             {% block content %}{% endblock content %}
         </div>
@@ -57,6 +55,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" integrity="sha256-U/cHDMTIHCeMcvehBv1xQ052bPSbJtbuiw4QA9cTKz0=" crossorigin="anonymous"></script>    
     <script type="text/javascript"> (function() { var css = document.createElement('link'); css.href = 'https://use.fontawesome.com/releases/v5.11.1/css/all.css'; css.rel = 'stylesheet'; css.type = 'text/css'; document.getElementsByTagName('head')[0].appendChild(css); })(); </script>
     <script src="{% static 'app.js' %}"></script>
+
+    <script>
+        $(window).on("load", function() {
+            $('.asyncImage').each(function(i,obj){
+                $(this).on('load', function() { $(this).addClass('noblur').removeClass('asyncImage')}).attr('src', $(this).data('src'));
+            });
+        });
+    </script>
     {% block js %}{% endblock js %}
 
 </body>

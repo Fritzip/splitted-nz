@@ -12,19 +12,19 @@ import json
 
 def gallery(request):
     articles_list = Article.objects.filter(is_visible=True).order_by('-created')
-    paginator = Paginator(articles_list, 10)
+    paginator = Paginator(articles_list, 9)
 
     page = request.GET.get('page')
     try:
-        articles = paginator.page(page)
+        articles_p = paginator.page(page)
     except PageNotAnInteger:
-        articles = paginator.page(1)
+        articles_p = paginator.page(1)
         # If page is not an integer, deliver first page.
     except EmptyPage:
-        articles = paginator.page(paginator.num_pages) 
+        articles_p = paginator.page(paginator.num_pages) 
         # If page is out of range (e.g.  9999), deliver last page of results.
 
-    return render(request, 'photo_gallery/gallery.html', { 'articles': articles_list })
+    return render(request, 'photo_gallery/gallery.html', {'articles':articles_list})
 
 # def map(request):
 #     sleepspots_list = SleepSpot.objects.all().order_by('-start_date')
